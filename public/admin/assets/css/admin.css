@@ -1,0 +1,289 @@
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 24px;
+    /* Rounded sliders */
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch .slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #ccc;
+    -webkit-transition: .4s;
+    transition: .4s;
+    height: 24px;
+    width: 100%;
+}
+
+.switch .slider:before {
+    position: absolute;
+    content: "";
+    height: 21px;
+    width: 21px;
+    left: 4px;
+    bottom: 2px;
+    background-color: white;
+    -webkit-transition: .4s;
+    transition: .4s;
+}
+
+.switch input:checked+.slider {
+    background-color: #B57A6A;
+}
+
+.switch input:focus+.slider {
+    -webkit-box-shadow: 0 0 1px #B57A6A;
+    box-shadow: 0 0 1px #B57A6A;
+}
+
+.switch input:checked+.slider:before {
+    -webkit-transform: translateX(22px);
+    transform: translateX(22px);
+}
+
+.switch .slider.round {
+    border-radius: 34px;
+}
+
+.switch .slider.round:before {
+    border-radius: 50%;
+}
+
+
+/* css create tutor */
+
+.experiences-trash {
+    display: flex;
+    align-items: center;
+}
+
+.experiences-trash .fa-trash:hover {
+    color: red;
+    cursor: pointer;
+}
+
+.add-experience {
+    cursor: pointer;
+}
+
+.select2 {
+    height: 36px;
+    width: 100%;
+}
+
+.frameImg {
+    width: 50px;
+    height: 50px;
+}
+
+.output-image {
+    margin: 30px 0 0 100px;
+    position: relative;
+}
+
+.remove {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-left: -30px;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+}
+
+.remove:hover {
+    background: white;
+    color: black;
+}
+
+.remove::after {
+    content: '\2716';
+}
+
+.removeVideo {
+    width: 24px;
+    height: 24px;
+    background-color: rgba(0, 0, 0, 0.5);
+    border-radius: 50%;
+    margin-top: 10px;
+    margin-left: -30px;
+    border: 1px solid black;
+    color: white;
+    text-align: center;
+    cursor: pointer;
+    position: absolute;
+}
+
+.removeVideo:hover {
+    background: white;
+    color: black;
+}
+
+.removeVideo::after {
+    content: '\2716';
+}
+
+.typeAnswer {
+    width: 50%;
+    height: 50%;
+}
+
+.radio_type_answer img {
+    border: solid 2px transparent;
+}
+
+.radio_type_answer img:hover {
+    cursor: pointer;
+    border: solid 2px #3790f1;
+}
+
+.radio_active img {
+    border: solid 2px #3790f1;
+}
+
+.box-img-frame {
+    margin: 80px auto;
+    position: relative;
+    width: fit-content;
+    overflow-clip-margin: inherit;
+}
+
+.box-edit {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    margin-bottom: 10px;
+}
+
+.box-edit .input-background-color {
+    position: absolute;
+    bottom: 0;
+}
+
+.box-edit .img-background {
+    position: absolute;
+    object-fit: contain;
+    top: 0;
+    left: 0;
+}
+
+.box-edit .img-avatar {
+    width: 150px;
+    height: 150px;
+}
+
+.box-edit .img-frame {
+    width: 150px;
+    height: 150px;
+    transform-origin: top left;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.nav-question {
+    color: #000;
+}
+
+.nav-question.active {
+    color: white;
+}
+
+.nav-question:hover {
+    color: #2c2c2c;
+}
+
+.index-question {
+    width: 35px;
+}
+
+.media-height {
+    height: 150px;
+}
+
+.fa.icon-green {
+    color: green;
+}
+
+.fa.icon-red {
+    color: red;
+}
+
+.max-height-150 {
+    max-height: 150px;
+}
+
+.box-gallery {
+    position: relative;
+}
+
+.box-gallery .img-background {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.box-gallery .img-sticker {
+    width: 80px;
+    height: 80px;
+    object-fit: cover;
+}
+
+.box-gallery .btn-delete-img {
+    position: absolute;
+    background: gray;
+    color: white;
+    padding: 0;
+}
+
+.box-gallery.background-item .btn-delete-img {
+    right: 10px;
+}
+
+.box-gallery.sticker-item .btn-delete-img {
+    right: 8px;
+}
+
+.box-gallery .btn-delete-img:focus {
+    box-shadow: none;
+}
+
+.box-gallery .btn-delete-img:hover {
+    top: 2px;
+    transform: scale(1.1);
+}
+
+.table-list-admin {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-list-admin th,
+.table-list-admin td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+.table-list-admin th {
+    background-color: #f2f2f2;
+}
+
+.table-list-admin tbody tr:nth-child(even) {
+    background-color: #f9f9f9;
+}
