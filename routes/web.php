@@ -95,12 +95,8 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
 
 });
 
-Route::group(['prefix' => 'vnp-sandbox', 'as' => 'vnp-sandbox.'], function () {
-    Route::get('/pay', [VnpSandboxController::class, 'index'])->name('pay-index');
-});
-
-Route::prefix('vnp-sandbox')->name('vnpay.')->group(function () {
-    Route::get('/', [VnpSandboxController::class, 'index'])->name('sandbox');
+Route::prefix('vnp-sandbox')->name('vnpay-sandbox.')->group(function () {
+    Route::get('/pay', [VnpSandboxController::class, 'index'])->name('sandbox');
     Route::post('/process', [VnpSandboxController::class, 'process'])->name('process');
     Route::get('/return', [VnpSandboxController::class, 'return'])->name('return');
     Route::get('/ipn', [VnpSandboxController::class, 'ipn'])->name('ipn');
