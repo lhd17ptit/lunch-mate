@@ -32,7 +32,6 @@ class VnpSandboxController extends Controller
             "vnp_OrderInfo" => $request->vnp_OrderInfo,
             "vnp_OrderType" => '100000', // https://sandbox.vnpayment.vn/apis/docs/loai-hang-hoa/
             "vnp_ReturnUrl" => URL::route('vnpay.return', [], true),
-            "vnp_IpnUrl" => URL::route('vnpay.return', [], true),
             "vnp_TmnCode" => config('constants.ENV.VNP_TMN_CODE'),
             "vnp_TxnRef" => time(),
             "vnp_Version" => "2.1.0"
