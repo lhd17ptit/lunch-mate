@@ -16,4 +16,9 @@ class FoodCategory extends Model
     {
         return $this->belongsTo(Shop::class, 'shop_id');
     }
+
+    public function foods()
+    {
+        return $this->hasMany(FoodItem::class, 'food_category_id')->orderBy('type', 'asc');
+    }
 }

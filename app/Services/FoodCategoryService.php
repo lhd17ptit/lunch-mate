@@ -32,7 +32,8 @@ class FoodCategoryService
             return view('admin.common.action-status', ['item' => $item]);
         })
         ->addColumn('action', function ($item) {
-            return '<a class="btn btn-danger btn-detail btn-sm mr-1" data-id="'.$item->id.'"><i class="fa fa-eye text-white"></i></a><a class="btn btn-danger btn-edit btn-sm mr-1" data-id="'.$item->id.'" data-title="'.$item->name.'"><i class="fa fa-wrench text-white"></i></a><a class="btn btn-danger btn-delete btn-sm" data-id="'.$item->id.'"><i class="fa fa-trash text-white"></i></a>';
+            return '<a class="btn btn-danger btn-edit btn-sm mr-1" data-id="'.$item->id.'" data-title="'.$item->name.'" data-shop-id="'.$item->shop_id.'" data-price="'.$item->price.'" data-note="'.$item->note.'"><i class="fa fa-wrench text-white"></i></a>
+            <a class="btn btn-danger btn-delete btn-sm" data-id="'.$item->id.'"><i class="fa fa-trash text-white"></i></a>';
         })
         ->rawColumns(['action', 'status'])
         ->make(true);

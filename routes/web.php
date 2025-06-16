@@ -7,6 +7,7 @@ use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FloorController;
 use App\Http\Controllers\Admin\FoodCategoryController;
 use App\Http\Controllers\Admin\FoodItemController;
+use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
@@ -44,6 +45,22 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
         Route::post('save-data', [ShopController::class, 'save'])->name('save');
         Route::get('edit', [ShopController::class, 'edit'])->name('edit');
         Route::get('detail', [ShopController::class, 'detail'])->name('detail');
+    });
+
+    Route::group(['prefix' => 'menus', 'as' => 'menus.'], function () {
+        Route::get('/', [MenuController::class, 'index'])->name('index');
+        Route::get('/list', [MenuController::class, 'getList'])->name('list');
+        Route::get('change-status', [MenuController::class, 'changeStatus'])->name('change-status');
+        Route::delete('delete', [MenuController::class, 'delete'])->name('delete');
+        Route::post('save-data', [MenuController::class, 'save'])->name('save');
+        Route::get('edit', [MenuController::class, 'edit'])->name('edit');
+        Route::get('detail', [MenuController::class, 'detail'])->name('detail');
+
+        Route::group(['as' => 'menu-items.'], function () {
+            Route::get('/{id}', [MenuController::class, 'indexMenuItem'])->name('index');
+            Route::post('/preview', [MenuController::class, 'previewMenuItem'])->name('preview');
+            Route::post('/store', [MenuController::class, 'storeMenuItem'])->name('store');
+        });
     });
 
     Route::group(['prefix' => 'food-categories', 'as' => 'food-categories.'], function () {

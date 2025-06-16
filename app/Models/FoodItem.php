@@ -13,6 +13,11 @@ class FoodItem extends Model
     protected $table = 'food_items';
     protected $guarded = [];
 
+
+    const TYPE_MAIN = 1;
+    const TYPE_SIDE = 2;
+    const TYPE_VEGETABLE = 3;
+
     public function foodCategory()
     {
         return $this->belongsTo(FoodCategory::class, 'food_category_id');
