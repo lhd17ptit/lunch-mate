@@ -12,8 +12,8 @@
                         @csrf
                         <div class="form-group mb-3">
                             <label for="vnp_Amount">Amount (VND)</label>
-                            <input type="number" class="form-control" id="vnp_Amount" name="vnp_Amount" required>
-                            <small class="form-text text-muted">Minimum amount: 1,000 VND</small>
+                            <input type="number" class="form-control" min="10000" id="vnp_Amount" name="vnp_Amount" required>
+                            <small class="form-text text-muted">Minimum amount: 10,000 VND</small>
                         </div>
 
                         <div class="form-group mb-3">
