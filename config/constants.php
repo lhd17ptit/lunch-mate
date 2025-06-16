@@ -28,8 +28,8 @@ return [
     ],
 
     'ENV' => [
-        'VNP_HASH_SECRET' => env('VNP_HASH_SECRET', 'G54RJ363DO7T0OH4I5JS7AKJAEWVOC07'),
-        'VNP_TMN_CODE' => env('VNP_TMN_CODE', 'D1M7CNW3'),
+        'VNP_HASH_SECRET' => env('VNP_HASH_SECRET'),
+        'VNP_TMN_CODE' => env('VNP_TMN_CODE'),
         'VNP_URL' => env('VNP_URL', 'https://sandbox.vnpayment.vn/paymentv2/vpcpay.html'),
     ],
 ];
