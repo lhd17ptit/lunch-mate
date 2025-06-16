@@ -20,15 +20,51 @@
     </div>
 </div>
 <div class="mt-1 px-3 pt-2 pb-5" style="background: white">
-    <div class="d-flex mt-4 justify-content-end mb-4 col-12">
-        <div class="btn btn-primary btn-add" style="margin-top: -7px;">Thêm mới</div>
+    <div class="row mt-5">
+        <div class="d-flex col-9">
+            <div class="form-group position-relative">
+                <input type="text" name="search" class="form-control input-food" id="search" placeholder="Nhập từ khóa ..." maxlength="250" style="width: 250px">
+            </div>
+
+            <div class="form-group position-relative">
+                <select class="form-control input-food ml-3" id="search_shop" style="width: 250px;">
+                    <option value="">Tìm kiếm theo cửa hàng</option>
+                     @foreach($shops as $shop)
+                        <option value="{{ $shop->id }}">{{ $shop->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group position-relative">
+                <select class="form-control input-food ml-3" id="search_category" style="width: 250px;">
+                    <option value="">Tìm kiếm theo danh mục</option>
+                    @foreach($foodCategories as $category)
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+
+            <div class="form-group position-relative">
+                <select class="form-control input-food ml-3" id="search_type" style="width: 250px;">
+                    <option value="">Tìm kiếm theo loại</option>
+                    <option value="1">Món chính</option>
+                    <option value="2">Món phụ</option>
+                    <option value="3">Món rau</option>
+                </select>
+            </div>
+        </div>
+        
+        <div class="d-flex justify-content-end mb-4 col-3">
+            <div class="btn btn-primary btn-add" style="margin-top: -7px;">Thêm mới</div>
+        </div>
     </div>
     <table id="example" class="table table-striped table-bordered data-table w-100" style="color:black">
         <thead>
             <tr class="text-center">
                 <th>Tên</th>
-                <th>Danh mục</th>
                 <th>Cửa hàng</th>
+                <th>Danh mục</th>
+                <th>Loại</th>
                 <th>Hoạt động</th>
             </tr>
         </thead>
@@ -116,17 +152,22 @@
                 serverSide : true,
                 stateSave: false,
                 searching: false,
+                pageLength: 30,
                 ajax: {
                     method: "GET",
                     url: '{{ route('admin.food-items.list') }}',
                     data : function(d) {
-                        //
+                        d.search = $('#search').val();
+                        d.search_shop = $('#search_shop').val();
+                        d.search_category = $('#search_category').val();
+                        d.search_type = $('#search_type').val();
                     }
                 },
                 columns: [
                     { data: 'name', name: 'name',  class: 'align-middle', orderable: false },
-                    { data: 'food_category', name: 'food_category',  class: 'align-middle', orderable: false },
                     { data: 'shop', name: 'shop',  class: 'align-middle', orderable: false },
+                    { data: 'food_category', name: 'food_category',  class: 'align-middle', orderable: false },
+                    { data: 'type', name: 'type',  class: 'align-middle', orderable: false },
                     {data: 'action', name: 'action', class: 'align-middle', orderable: false, searchable: false},
                 ]
             });
@@ -135,6 +176,25 @@
                 var inputValue = $(this).val();
                 inputValue = inputValue.replace(/\s+/g, ' ');
                 $(this).val(inputValue);
+            });
+
+            $('#search_shop').on('change', function() {
+                $('#search_category').val('');
+                $('#search_type').val('');
+                $('#example').DataTable().draw();
+            });
+
+            $('#search_category').on('change', function() {
+                $('#search_type').val('');
+                $('#example').DataTable().draw();
+            });
+
+            $('#search_type').on('change', function() {
+                $('#example').DataTable().draw();
+            });
+
+            $('#search').on('keyup', function() {
+                $('#example').DataTable().draw();
             });
         });
 
@@ -231,11 +291,20 @@
         $(document).on('click', '.btn-edit', function () {
             var id = $(this).data('id');
             var title = $(this).data('title');
+            var price = $(this).data('price');
+            var food_category_id = $(this).data('food-category-id');
+            var type = $(this).data('type');
 
             $('#modal_item_food_item_label').html('CHỈNH SỬA');
             $('#item_food_item_id').val(id);
             $('#title').val(title);
+            $('#price').val(price);
+            $('#food_category_id').val(food_category_id);
+            $('#type').val(type);
             $('#err_title').html('');
+            $('#err_price').html('');
+            $('#err_food_category').html('');
+            $('#err_type').html('');
             $('#modal_item_food_item').modal('show');
         });
 

@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Models\FoodItem;
 use App\Repositories\FoodItemRepository;
 use Illuminate\Support\Facades\DB;
 use Yajra\DataTables\Facades\DataTables;
@@ -16,25 +17,51 @@ class FoodItemService
         $this->foodItemRepository = $foodItemRepository;
     }
 
-    public function getList()
+    public function getList($data)
     {
-        $data = $this->foodItemRepository->query();
+        $items = $this->foodItemRepository->query();
 
-        $data->whereHas('foodCategory');
+        $items->whereHas('foodCategory');
 
-        $data->orderBy('id', 'asc')->get();
+        if (!empty($data['search'])) {
+            $items->where('name', 'like', '%' . $data['search'] . '%');
+        }
+        if (!empty($data['search_shop'])) {
+            $items->whereHas('foodCategory', function ($query) use ($data) {
+                $query->where('shop_id', $data['search_shop']);
+            });
+        }
+        if (!empty($data['search_category'])) {
+            $items->where('food_category_id', $data['search_category']);
+        }
+        if (!empty($data['search_type'])) {
+            $items->where('type', $data['search_type']);
+        }
 
-        return DataTables::of($data)
+        $items->orderBy('id', 'asc')->get();
+
+        return DataTables::of($items)
         ->editColumn('shop', function ($item) {
             return $item->foodCategory && $item->foodCategory->shop ? $item->foodCategory->shop->name : 'Chưa xác định';
         })
         ->editColumn('food_category', function ($item) {
             return $item->foodCategory ? $item->foodCategory->name : 'Chưa xác định';
         })
-        ->addColumn('action', function ($item) {
-            return '<a class="btn btn-danger btn-detail btn-sm mr-1" data-id="'.$item->id.'"><i class="fa fa-eye text-white"></i></a><a class="btn btn-danger btn-edit btn-sm mr-1" data-id="'.$item->id.'" data-title="'.$item->name.'"><i class="fa fa-wrench text-white"></i></a><a class="btn btn-danger btn-delete btn-sm" data-id="'.$item->id.'"><i class="fa fa-trash text-white"></i></a>';
+        ->editColumn('type', function ($item) {
+            if ($item->type == FoodItem::TYPE_MAIN) {
+                return 'Món chính';
+            } elseif ($item->type == FoodItem::TYPE_SIDE) {
+                return 'Món phụ';
+            } elseif ($item->type == FoodItem::TYPE_VEGETABLE) {
+                return 'Món rau';
+            } else {
+                return '';
+            }
         })
-        ->rawColumns(['shop', 'food_category', 'action'])
+        ->addColumn('action', function ($item) {
+            return '<a class="btn btn-danger btn-detail btn-sm mr-1" data-id="'.$item->id.'"><i class="fa fa-eye text-white"></i></a><a class="btn btn-danger btn-edit btn-sm mr-1" data-id="'.$item->id.'" data-title="'.$item->name.'" data-price="'.$item->price.'" data-food-category-id="'.$item->food_category_id.'" data-type="'.$item->type.'"><i class="fa fa-wrench text-white"></i></a><a class="btn btn-danger btn-delete btn-sm" data-id="'.$item->id.'"><i class="fa fa-trash text-white"></i></a>';
+        })
+        ->rawColumns(['shop', 'food_category', 'type', 'action'])
         ->make(true);
     }
 

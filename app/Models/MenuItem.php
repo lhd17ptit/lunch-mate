@@ -11,4 +11,9 @@ class MenuItem extends Model
 
     protected $table = 'menu_items';
     protected $guarded = [];
+
+    public function foodItem()
+    {
+        return $this->belongsTo(FoodItem::class, 'food_item_id', 'id');
+    }
 }

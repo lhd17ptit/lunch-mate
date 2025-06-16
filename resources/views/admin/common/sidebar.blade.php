@@ -2,7 +2,7 @@
     <ul id="sidebarnav">
         <li class="nav-small-cap">
             <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
-            <span class="hide-menu">MENU</span>
+            <span class="hide-menu">HỆ THỐNG</span>
         </li>
         <li class="sidebar-item">
             <a class="sidebar-link" href="{{ route('admin.dashboard')}}" aria-expanded="false">
@@ -32,6 +32,10 @@
                 <span class="hide-menu">DS cửa hàng</span>
                 </a>
             </li>
+            <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">MENU</span>
+            </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{ route('admin.food-categories.index')}}" aria-expanded="false">
                 <span>
@@ -47,6 +51,18 @@
                 </span>
                 <span class="hide-menu">DS đồ ăn</span>
                 </a>
+            </li>
+            <li class="sidebar-item">
+                <a class="sidebar-link" href="{{ route('admin.menus.index')}}" aria-expanded="false">
+                <span>
+                    <i class="ti ti-layout-dashboard"></i>
+                </span>
+                <span class="hide-menu">Quản lý menu</span>
+                </a>
+            </li>
+            <li class="nav-small-cap">
+                <i class="ti ti-dots nav-small-cap-icon fs-4"></i>
+                <span class="hide-menu">NHÂN SỰ</span>
             </li>
             <li class="sidebar-item">
                 <a class="sidebar-link" href="{{ route('admin.user-admins.index')}}" aria-expanded="false">
