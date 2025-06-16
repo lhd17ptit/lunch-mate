@@ -169,7 +169,7 @@ class VnpSandboxController extends Controller
 				if ($order != null) {
 					// check order with database data to verify on top of signature hash
 					if ($order->amount == $vnp_Amount) {
-						if (empty($order->status)) {
+						if (empty($order->status_code)) {
 							// Check payment status
 							if ($inputData['vnp_ResponseCode'] == '00' || $inputData['vnp_TransactionStatus'] == '00') {
 								$status = Transaction::STATUS_CODE['SUCCESS']; // Payment successful
