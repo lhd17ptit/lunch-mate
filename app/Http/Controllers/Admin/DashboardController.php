@@ -58,6 +58,6 @@ class DashboardController extends Controller
     public function logout()
     {
         auth()->guard('admin')->logout();
-        return redirect()->route('admin.auth.login.index')->with('success', 'Đăng xuất thành công');
+        return redirect()->route('admin.login.index')->with('success', 'Đăng xuất thành công');
     }
 }

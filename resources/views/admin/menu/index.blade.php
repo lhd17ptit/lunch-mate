@@ -46,7 +46,8 @@
                 <th>Tên menu</th>
                 <th>Cửa hàng</th>
                 <th>Ngày tạo</th>
-                <th>Hoạt động</th>
+                <th>Trạng thái</th>
+                <th>Hành động</th>
             </tr>
         </thead>
         <tbody class="text-center">
@@ -130,6 +131,7 @@
                     { data: 'title', name: 'title',  class: 'align-middle', orderable: false },
                     { data: 'shop', name: 'shop',  class: 'align-middle', orderable: false },
                     { data: 'created_at', name: 'created_at',  class: 'align-middle', orderable: false },
+                    { data: 'status', name: 'status',  class: 'align-middle', orderable: false },
                     {data: 'action', name: 'action', class: 'align-middle', orderable: false, searchable: false},
                 ]
             });
@@ -262,6 +264,27 @@
                 error: function(error) {
                     $('.js-loading-mask').addClass('is-remove');
                     toastr.error("Lây thông tin thất bại");
+                }
+            });
+        });
+
+        $(document).on('change', '.switch-status', function() {
+            var status = $(this).prop('checked') == true ? 0 : 1;
+            var id = $(this).data('id');
+            var datatable = $('#example').DataTable();
+            $('.js-loading-mask').removeClass('is-remove');
+            $.ajax({
+                url: "menus/change-status?id="+id+'&status='+status,
+                type: 'GET',
+                success: function(data) {
+                    $('.js-loading-mask').addClass('is-remove');
+                    datatable.draw();
+                    toastr.success("Thay đổi trạng thái thành công.");
+                },
+                error: function(error) {
+                    $('.js-loading-mask').addClass('is-remove');
+                    toastr.error("Thay đổi trạng thái thất bại");
+                    datatable.draw();
                 }
             });
         });

@@ -35,7 +35,7 @@
                   <img src="{{ asset('admin/assets/images/logos/dark-logo.svg') }}" width="180" alt="">
                 </a>
                 <p class="text-center"></p>
-                <form class="mt-4" action="{{ route('admin.auth.login') }}" method="POST">
+                <form class="mt-4" action="{{ route('admin.login') }}" method="POST">
                     @csrf
                   <div class="mb-3">
                     <label for="exampleInputEmail1" class="form-label">Username</label>

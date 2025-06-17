@@ -111,6 +111,7 @@
                         <option value="1">Món chính</option>
                         <option value="2">Món phụ</option>
                         <option value="3">Món rau</option>
+                        <option value="4">Topping</option>
                     </select>
                     <span class="error font-size-normal text-danger" id="err_type"></span>
                 </div>

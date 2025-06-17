@@ -1,0 +1,195 @@
+    .title-menu {
+        font-size: 24px;
+        font-weight: bold;
+        text-align: center;
+        margin-top: 30px;
+        text-decoration: underline;
+    }
+    
+    .block-menu {
+        background-color: #f7f7f7;
+        padding: 30px;
+        border-radius: 10px;
+        margin-top: 40px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    }
+    
+    .block-menu .food-category {
+        font-size: 17px;
+        font-weight: 700;
+        text-transform: uppercase;
+        text-align: center;
+        margin-top: 20px;
+    }
+    
+    .block-menu .sub-title {
+        font-size: 13px;
+        font-weight: 400;
+        text-align: center;
+    }
+    
+    .block-menu .food-item {
+        margin-top: 10px;
+    }
+    
+    .block-menu .food-item .food-name {
+        font-size: 14px;
+        font-weight: 400;
+        margin-left: 60px;
+    }
+    
+    .btn-order-now {
+        background-color: #004A7F;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        border: none;
+        color: #FFFFFF;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        padding: 4px 12px;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    @-webkit-keyframes glowing {
+        0% {
+            background-color: #004A7F;
+            -webkit-box-shadow: 0 0 3px #004A7F;
+        }
+        50% {
+            background-color: #0094FF;
+            -webkit-box-shadow: 0 0 10px #0094FF;
+        }
+        100% {
+            background-color: #004A7F;
+            -webkit-box-shadow: 0 0 3px #004A7F;
+        }
+    }
+    
+    @-moz-keyframes glowing {
+        0% {
+            background-color: #004A7F;
+            -moz-box-shadow: 0 0 3px #004A7F;
+        }
+        50% {
+            background-color: #0094FF;
+            -moz-box-shadow: 0 0 10px #0094FF;
+        }
+        100% {
+            background-color: #004A7F;
+            -moz-box-shadow: 0 0 3px #004A7F;
+        }
+    }
+    
+    @-o-keyframes glowing {
+        0% {
+            background-color: #004A7F;
+            box-shadow: 0 0 3px #004A7F;
+        }
+        50% {
+            background-color: #0094FF;
+            box-shadow: 0 0 10px #0094FF;
+        }
+        100% {
+            background-color: #004A7F;
+            box-shadow: 0 0 3px #004A7F;
+        }
+    }
+    
+    @keyframes glowing {
+        0% {
+            background-color: #004A7F;
+            box-shadow: 0 0 3px #004A7F;
+        }
+        50% {
+            background-color: #0094FF;
+            box-shadow: 0 0 10px #0094FF;
+        }
+        100% {
+            background-color: #004A7F;
+            box-shadow: 0 0 3px #004A7F;
+        }
+    }
+    
+    .btn-order-now {
+        -webkit-animation: glowing 1500ms infinite;
+        -moz-animation: glowing 1500ms infinite;
+        -o-animation: glowing 1500ms infinite;
+        animation: glowing 1500ms infinite;
+    }
+    
+    .choose-food {
+        padding: 30px;
+        border: 1px solid #ced4da;
+        border-radius: 10px;
+    }
+    
+    .choose-food .form-check {
+        margin-top: 30px;
+        font-size: 18px;
+        font-weight: 600;
+    }
+    
+    .choose-food .form-check-item {
+        margin-top: 15px;
+        font-size: 14px;
+        margin-left: 40px;
+    }
+    
+    .choose-food .food-item {
+        margin-left: 20px;
+    }
+    
+    .block-order {
+        margin-top: 40px;
+        padding-left: 30px;
+        border: 2px solid #a298e1;
+        border-radius: 10px;
+        padding: 30px;
+        margin-left: 30px;
+    }
+    
+    .block-order .order {
+        background-color: #f7f7f7;
+        border-radius: 10px;
+        padding: 10px;
+        margin-bottom: 15px;
+        box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    }
+    
+    .block-order .order .user-name {
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .block-order .order .order-food-category {
+        font-size: 16px;
+        font-weight: 600;
+    }
+    
+    .block-order .order .order-delete {
+        position: absolute;
+        right: 10px;
+        top: 20px;
+    }
+    
+    .block-order .btn-checkout {
+        background-color: #004A7F;
+        -webkit-border-radius: 10px;
+        border-radius: 10px;
+        border: none;
+        color: #FFFFFF;
+        padding: 5px 12px;
+        cursor: pointer;
+        display: inline-block;
+        font-size: 16px;
+        text-align: center;
+        text-decoration: none;
+    }
+    
+    @media (max-width: 768px) {
+        .block-menu .food-item .food-name {
+            margin-left: 0;
+        }
+    }
