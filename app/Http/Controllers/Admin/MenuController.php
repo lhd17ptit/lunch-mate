@@ -46,6 +46,11 @@ class MenuController extends Controller
         return $this->menuService->save($request->all());
     }
 
+    public function changeStatus(Request $request)
+    {
+        return $this->menuService->changeStatus($request->id, $request->status);
+    }
+
     public function delete(Request $request)
     {
         return $this->menuService->delete($request->id);

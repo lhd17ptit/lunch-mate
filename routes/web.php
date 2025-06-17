@@ -1,8 +1,6 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
-use App\Http\Controllers\Admin\BannerController;
-use App\Http\Controllers\Admin\CategoryController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FloorController;
 use App\Http\Controllers\Admin\FoodCategoryController;
@@ -11,9 +9,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
-use App\Http\Controllers\Client\AuthController;
-use App\Http\Controllers\Client\HomeController;
-use App\Http\Controllers\Client\OrderController as ClientOrderController;
+use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
 use App\Http\Controllers\VnpSandboxController;
 use Illuminate\Support\Facades\Route;
@@ -29,12 +25,13 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
+Route::get('admin/login', [DashboardController::class, 'indexLogin'])->name('admin.login.index');
+Route::post('admin/login', [DashboardController::class, 'login'])->name('admin.login');
 
-Route::group(['prefix' => 'admin', 'as' => 'admin.'], function () {
+
+Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'authentication'], function () {
     Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
 
-    Route::get('/login', [DashboardController::class, 'indexLogin'])->name('auth.login.index');
-    Route::post('/login', [DashboardController::class, 'login'])->name('auth.login');
     Route::post('/logout', [DashboardController::class, 'logout'])->name('auth.logout');
 
     Route::group(['prefix' => 'shops', 'as' => 'shops.'], function () {
@@ -118,3 +115,13 @@ Route::prefix('vnp-sandbox')->name('vnpay.')->group(function () {
     Route::get('/return', [VnpSandboxController::class, 'return'])->name('return');
     Route::get('/ipn', [VnpSandboxController::class, 'ipn'])->name('ipn');
 });
+
+Route::get('/', [OrderController::class, 'index'])->name('home');
+Route::post('/get-total-order', [OrderController::class, 'getTotalOrder'])->name('get-total-order');
+Route::post('/add-to-order', [OrderController::class, 'addToOrder'])->name('add-to-order');
+Route::post('/remove-item-to-order', [OrderController::class, 'removeItemToOrder'])->name('remove-item-to-order');
+Route::post('/checkout-order', [OrderController::class, 'checkoutOrder'])->name('checkout-order');
+
+
+
+

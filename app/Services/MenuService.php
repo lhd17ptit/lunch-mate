@@ -42,12 +42,15 @@ class MenuService
         ->addColumn('created_at', function ($item) {
             return $this->getDayOfWeek($item->created_at);
         })
+        ->editColumn('status', function ($item) {
+            return view('admin.common.action-status', ['item' => $item]);
+        })
         ->addColumn('action', function ($item) {
             return '<a class="btn btn-danger btn-detail btn-sm mr-1" data-id="'.$item->id.'"><i class="fa fa-eye text-white"></i></a>
             <a href="'.route('admin.menus.menu-items.index', $item->id).'" class="btn btn-danger btn-edit btn-sm mr-1" data-id="'.$item->id.'" data-title="'.$item->name.'"><i class="fa fa-wrench text-white"></i></a>
             <a class="btn btn-danger btn-delete btn-sm" data-id="'.$item->id.'"><i class="fa fa-trash text-white"></i></a>';
         })
-        ->rawColumns(['shop', 'action'])
+        ->rawColumns(['shop', 'action', 'status'])
         ->make(true);
     }
 
@@ -81,6 +84,34 @@ class MenuService
 
         } catch (\Exception $e) {
             DB::rollBack();
+            return response()->json([
+                'status' => false,
+                'message' => $e->getMessage(),
+            ], 500);
+        }
+    }
+
+    public function changeStatus($id)
+    {
+        try {
+            $menu = $this->menuRepository->find($id);
+            if (!$menu) {
+                return response()->json([
+                    'status' => false,
+                    'message' => 'Không tìm thấy dữ liệu',
+                ], 404);
+            }
+
+            $menu->update([
+                'status' => $menu->status == config('constants.ACTIVE') ? config('constants.INACTIVE') : config('constants.ACTIVE'),
+            ]);
+
+            return response()->json([
+                'status' => true,
+                'message' => 'Câp nhật trạng thái thành công',
+                'data' => $menu,
+            ], 200);
+        } catch (\Exception $e) {
             return response()->json([
                 'status' => false,
                 'message' => $e->getMessage(),
