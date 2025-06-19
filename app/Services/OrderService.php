@@ -141,6 +141,13 @@ class OrderService
         }
         $priceCategory = $foodCategories[$foodCategory]->price ?? 0;
         $total += $priceCategory;
+
+        if (!empty($foodCategories[$foodCategory]->key) && $foodCategories[$foodCategory]->key == 'com' && $total < 40) {
+            return response()->json([
+                'status' => false,
+                'message' => 'Vui lòng chọn thêm món. Suất ăn tối thiểu là 40.000 VNĐ',
+            ], 400);
+        }
         
         $cart[] = [
             'user_id' => $user_id,

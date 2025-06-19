@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
@@ -18,9 +19,9 @@
             <div class="col-md-6">
                 <div class="title-menu">THỰC ĐƠN HÔM NAY</div>
                 <div class="block-menu row">
-                    <div class="col-md-2">&nbsp;</div>
-                    <div class="col-md-8">
-                        @if (!empty($menu->foodCategories))
+                    {{-- <div class="col-md-1">&nbsp;</div> --}}
+                    <div class="col-md-12">
+                        {{-- @if (!empty($menu->foodCategories))
                             @foreach ($menu->foodCategories as $foodCategory)
                                 @if (in_array($foodCategory->id, $foodCategories))
                                     <div class="food-category">
@@ -73,9 +74,70 @@
 
                         <div class="d-flex justify-content-center mt-5">
                             <div class="btn-order-now" data-toggle="modal" data-target="#exampleModalCenter">CHỌN MÓN</div>
+                        </div> --}}
+                        <div class="choose-food mt-3">
+                            <div class="form-check mt-0">
+                                Người đặt: <br>
+        
+                                <select name="user_id" id="user_id" class="form-control mt-4">
+                                    <option value="">Chọn người đặt</option>
+                                    @foreach ($users as $user)
+                                        <option value="{{ $user->id }}">{{ $user->name }}</option>
+                                    @endforeach
+                                </select>
+                            </div>
+                            <p class="text-center">-------------------------------------------------------</p>
+                            @if (!empty($menu->foodCategories))
+                                @foreach ($menu->foodCategories as $foodCategory)
+                                    @if (in_array($foodCategory->id, $foodCategories))
+                                        <div class="form-check">
+                                            <label class="form-check-label" for="food-category-{{ $foodCategory->id }}">
+                                                {{ $foodCategory->name }}
+                                            </label>
+                                        </div>
+                                        <div class="row food-item food-category-{{ $foodCategory->id }}">
+                                            @php
+                                                $typeOne = false;
+                                                $typeTwo = false;
+                                                $typeThree = false;
+                                            @endphp
+                                            @foreach ($foodCategory->foods as $food)
+                                                @if ($food->type == 1 && empty($typeOne))
+                                                    <div class="text-center col-10 mt-3">Món chính</div>
+                                                    @php
+                                                        $typeOne = true;
+                                                    @endphp
+                                                @elseif ($food->type == 2 && empty($typeTwo))
+                                                    <div class="text-center col-10 mt-3">Món phụ</div>
+                                                    @php
+                                                        $typeTwo = true;
+                                                    @endphp
+                                                @elseif ($food->type == 3 && empty($typeThree))
+                                                    <div class="text-center col-10 mt-3">Món rau</div>
+                                                    @php
+                                                        $typeThree = true;
+                                                    @endphp
+                                                @endif
+                                                <div class="form-check-item {{ $foodCategory->key != 'com' ? 'col-md-3 col-6' : 'col-md-5 col-6' }}">
+                                                    <input class="form-check-input ck-food-item item-food-category-{{ $foodCategory->id }}" type="checkbox" value="{{ $food->id }}" id="food-item-{{ $food->id }}" data-id="{{ $food->id }}">
+                                                    <label class="form-check-label" for="food-item-{{ $food->id }}">
+                                                        {{ $food->name }}
+                                                    </label>
+                                                </div>
+                                            @endforeach
+                                        </div>
+                                    @endif
+                                @endforeach
+                            @endif
+                        </div>
+                        <div class="mt-3" style="font-size: 18px; font-weight: 600;">Số tiền cần thanh toán: <span id="total">0</span> VND</div>
+
+                        <div class="d-flex justify-content-center mt-3 mb-4">
+                            <button type="button" class="btn btn-primary" id="save_order">HOÀN THÀNH SUẤT</button>
                         </div>
                     </div>
-                    <div class="col-md-2">&nbsp;</div>
+
+                    {{-- <div class="col-md-1">&nbsp;</div> --}}
                 </div>
             </div>
             <div class="col-md-6">
@@ -122,7 +184,7 @@
 
 
     <!-- Modal -->
-    <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+    {{-- <div class="modal fade" id="exampleModalCenter" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-lg" role="document">
         <div class="modal-content">
             <div class="modal-header">
@@ -195,17 +257,21 @@
             </div>
         </div>
         </div>
-    </div>
+    </div> --}}
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
     <script src="{{ asset('admin/assets/js/toastr.js') }}"></script>
 
     <script>
         $(document).ready(function() {
+            $('#user_id').select2();
+
             $('.btn-order-now').click(function() {
                 $('.ck-food-item').prop('checked', false);
                 $('#total').html(0);
@@ -270,7 +336,9 @@
                         },
                         success: function(data) {
                             $('#order-list').html(data.data.view);
-                            $('#exampleModalCenter').modal('hide');
+                            $('#user_id').val('');
+                            $('.ck-food-item').prop('checked', false);
+                            $('#total').html('0');
                         },
                         error: function(error) {                            
                             toastr.error(error.responseJSON.message);

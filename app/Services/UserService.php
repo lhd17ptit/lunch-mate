@@ -24,7 +24,7 @@ class UserService
         $admin = auth()->guard('admin')->user();
         $floorAdmin = $admin->role == Admin::PARTNER ? ($admin->single_floor ?? null) : null;
 
-        $users = $this->userRepository->query()
+        $users = $this->userRepository->query()->whereNotNull('name')
         ->when(!empty($data['search']), function ($query) use ($data) {
             return $query->where('name', 'like', '%'.$data['search'].'%');
         })

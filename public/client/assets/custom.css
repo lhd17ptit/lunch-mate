@@ -8,7 +8,7 @@
     
     .block-menu {
         background-color: #f7f7f7;
-        padding: 30px;
+        /* padding: 30px; */
         border-radius: 10px;
         margin-top: 40px;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
@@ -121,7 +121,7 @@
     
     .choose-food {
         padding: 30px;
-        border: 1px solid #ced4da;
+        /* border: 1px solid #ced4da; */
         border-radius: 10px;
     }
     
@@ -208,6 +208,11 @@
     .form-check-label {
         margin-top: 3px;
         margin-left: 5px;
+    }
+    
+    .select2-selection__rendered {
+        font-size: 16px;
+        font-weight: 400;
     }
     
     @media (max-width: 768px) {
