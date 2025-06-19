@@ -27,7 +27,7 @@ class OrderController extends Controller
 
     public function index()
     {
-        $users = $this->userRepository->query()->where('status', config('constants.ACTIVE'))->get();
+        $users = $this->userRepository->query()->where('status', config('constants.ACTIVE'))->whereNotNull('name')->orderBy('name', 'asc')->get();
         $cart = session()->get('cart', []);
 
         $menu = $this->menuRepository->query()
