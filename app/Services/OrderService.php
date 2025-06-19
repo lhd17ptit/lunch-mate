@@ -2,6 +2,7 @@
 
 namespace App\Services;
 
+use App\Exports\OrderExport;
 use App\Repositories\FoodCategoryRepository;
 use App\Repositories\FoodItemRepository;
 use App\Repositories\OrderRepository;
@@ -11,6 +12,8 @@ use App\Repositories\UserRepository;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
+use Yajra\DataTables\Facades\DataTables;
 
 class OrderService
 {
@@ -181,16 +184,19 @@ class OrderService
     public function checkoutOrder($data)
     {
         $cart = session()->get('cart', []);
-        // $user = Auth::guard('user')->user ?? null;
         // $user = $this->userRepository->find($user->id);
 
         $total = array_sum(array_column($cart, 'total'));
 
         try {
             DB::beginTransaction();
+            $user = $this->userRepository->create([
+                'guest_token' => Str::uuid(),
+            ]);
+
             $order = $this->orderRepository->create([
                 'user_id' => $user->id ?? null,
-                'floor_id' => $user->floor_id ?? null,
+                'floor_id' => $user->floor_id ?? 0,
                 'total' => $total,
                 'status' => config('constants.ORDER_STATUS_PENDING'),
                 'order_code' => 'ORD-'. Str::uuid(),
@@ -199,7 +205,8 @@ class OrderService
             foreach ($cart as $item) {
                 $orderServings = $this->orderServingRepository->create([
                     'order_id' => $order->id,
-                    'total' => $item['total'],
+                    'amount' => $item['total'],
+                    'user_id' => $item['user_id'],
                 ]);
 
                 $lineItems = [];
@@ -229,5 +236,61 @@ class OrderService
             ], 400);
         }
         
+    }
+
+    public function getListAnalytics($data)
+    {
+        {
+            $items = $this->orderServingRepository->query();
+    
+            if (!empty($data['search_date'])) {
+                $items->whereDate('created_at', $data['search_date']);
+            }
+
+            if (!empty($data['search_floor'])) {
+                $items->whereHas('user', function ($query) use ($data) {
+                    $query->where('floor_id', $data['search_floor']);
+                });
+            }
+    
+            $items->orderBy('id', 'desc')->get();
+    
+            return DataTables::of($items)
+            ->addColumn('user', function ($item) {
+                return $item->user->name ?? 'Chưa xác định';
+            })
+            ->addColumn('created_at', function ($item) {
+                return date('d/m/Y', strtotime($item->created_at));
+            })
+            ->addColumn('floor', function ($item) {
+                return $item->user->floor->name ?? 'Chưa xác định';
+            })
+            ->addColumn('amount', function ($item) {
+                return $item->amount.',000';
+            })
+            ->addColumn('action', function ($item) {
+                return '<a class="btn btn-danger btn-detail btn-sm mr-1" data-id="'.$item->id.'"><i class="fa fa-eye text-white"></i></a>';
+            })
+            ->rawColumns(['user', 'action', 'floor', 'created_at'])
+            ->make(true);
+        }
+    }
+
+    public function exportAnalytics($data)
+    {
+        return Excel::download(new OrderExport($data), 'order.xlsx');
+    }
+
+    public function detailAnalytics($data)
+    {
+        $orderServing = $this->orderServingRepository->find($data['id']);
+
+        return response()->json([
+            'status' => true,
+            'data' => [
+                'view' => view('admin.analytics.detail', ['orderServing' => $orderServing])->render(),
+                'orderServing' => $orderServing,
+            ]
+        ], 200);
     }
 }

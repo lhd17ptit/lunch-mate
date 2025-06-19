@@ -27,7 +27,7 @@ class SaveFoodItemRequest extends FormRequest
             'name' => 'required|string|max:255',
             'food_category_id' => 'required|exists:food_categories,id',
             'price' => 'required|numeric|min:0',
-            'type' => 'nullable|in:1,2,3',
+            'type' => 'nullable|in:1,2,3,4',
         ];
     }
 }

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\AdminController;
+use App\Http\Controllers\Admin\AnalyticsController;
 use App\Http\Controllers\Admin\DashboardController;
 use App\Http\Controllers\Admin\FloorController;
 use App\Http\Controllers\Admin\FoodCategoryController;
@@ -57,6 +58,13 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'authentica
             Route::post('/preview', [MenuController::class, 'previewMenuItem'])->name('preview');
             Route::post('/store', [MenuController::class, 'storeMenuItem'])->name('store');
         });
+    });
+
+    Route::group(['prefix' => 'analytics', 'as' => 'analytics.'], function () {
+        Route::get('/', [AnalyticsController::class, 'index'])->name('index');
+        Route::get('/list', [AnalyticsController::class, 'getList'])->name('list');
+        Route::get('/detail', [AnalyticsController::class, 'detail'])->name('detail');
+        Route::get('/export', [AnalyticsController::class, 'export'])->name('export');
     });
 
     Route::group(['prefix' => 'food-categories', 'as' => 'food-categories.'], function () {

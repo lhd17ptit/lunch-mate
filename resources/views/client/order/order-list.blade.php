@@ -9,8 +9,8 @@
                     $names = array_column($item['items'], 'title');
                 @endphp
                 {{ implode(' + ', $names) }}
-            </span>
-            <span class="order-price"> = {{ $item['total'] }},000 VND</span>
+            </span><br>
+            <div class="order-price"> = {{ $item['total'] }},000 VND</div>
         </div>
         <div class="order-delete" data-id="{{ $key }}">
             <i class="fa fa-trash" style="cursor: pointer;"></i>
@@ -21,7 +21,7 @@
         @php
             $total = array_sum(array_column($cart, 'total'));
         @endphp
-        <span class="total-order-text">Tổng tiền: {{ $total }},000 VND</span>
+        <div class="total-order-text mt-3"><b>Tổng tiền</b>: {{ $total }},000 VND</div>
     </div>
 @else
     Không có đơn đặt hôm nay

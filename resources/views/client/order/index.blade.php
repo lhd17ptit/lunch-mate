@@ -4,9 +4,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Document</title>
+    <title>Lunch Mate</title>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
@@ -92,8 +93,8 @@
                                             $names = array_column($item['items'], 'title');
                                         @endphp
                                         {{ implode(' + ', $names) }}
-                                    </span>
-                                    <span class="order-price"> = {{ $item['total'] }},000 VND</span>
+                                    </span><br>
+                                    <div class="order-price"> = {{ $item['total'] }},000 VND</div>
                                 </div>
                                 <div class="order-delete" data-id="{{ $key }}">
                                     <i class="fa fa-trash" style="cursor: pointer;"></i>
@@ -104,7 +105,7 @@
                                 @php
                                     $total = array_sum(array_column($cart, 'total'));
                                 @endphp
-                                <span class="total-order-text">Tổng tiền: {{ $total }},000 VND</span>
+                                <div class="total-order-text mt-3"><b>Tổng tiền</b>: {{ $total }},000 VND</div>
                             </div> 
                         @else
                             Không có đơn đặt hôm nay
@@ -196,16 +197,20 @@
         </div>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
+    <script src="{{ asset('admin/assets/js/toastr.js') }}"></script>
+
     <script>
         $(document).ready(function() {
             $('.btn-order-now').click(function() {
                 $('.ck-food-item').prop('checked', false);
                 $('#total').html(0);
                 $('#user_id').val('');
+                $('#exampleModalCenter').modal('show');
             });
 
             $(document).on('change', '.ck-food-item', function() {
@@ -231,7 +236,7 @@
                             $('#total').html(data.total + ',000');
                         },
                         error: function(error) {                            
-                            alert(error.responseJSON.message);
+                            toastr.error(error.responseJSON.message);
                             $(checkbox).prop('checked', false);
                         }
                     });
@@ -243,7 +248,7 @@
                 var user_id = $('#user_id').val();
 
                 if (user_id == '') {
-                    alert('Vui lòng chọn người đặt');
+                    toastr.error('Vui lòng chọn người đặt');
                     return;
                 }
 
@@ -268,7 +273,7 @@
                             $('#exampleModalCenter').modal('hide');
                         },
                         error: function(error) {                            
-                            alert(error.responseJSON.message);
+                            toastr.error(error.responseJSON.message);
                             $(checkbox).prop('checked', false);
                         }
                     });
@@ -288,7 +293,7 @@
                         $('#order-list').html(data.data.view);
                     },
                     error: function(error) {                            
-                        alert(error.responseJSON.message);
+                        toastr.error(error.responseJSON.message);
                     }
                 });
             });
@@ -297,7 +302,7 @@
         $(document).on('click', '.btn-checkout', function() {
             var count = $('#count-item').val();
             if (count == 0) {
-                alert('Vui lòng chọn món');
+                toastr.error('Vui lòng chọn món');
                 return;
             }
 
@@ -308,10 +313,13 @@
                     "_token": "{{ csrf_token() }}",
                 },
                 success: function(data) {
-                    alert('Đặt đơn thành công');
+                    toastr.success('Đặt đơn thành công');
+                    setTimeout(() => {
+                        window.location.reload();
+                    }, 3000);
                 },
                 error: function(error) {                            
-                    alert('Đặt đơn thất bại');
+                    toastr.error('Đặt đơn thất bại');
                 }
             });
         });
