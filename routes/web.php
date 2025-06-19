@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
+use App\Http\Controllers\VnpSandboxController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -113,6 +114,14 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'middleware' => 'authentica
         Route::post('save-data', [UserController::class, 'save'])->name('save');
         Route::get('edit', [UserController::class, 'edit'])->name('edit');
     });
+
+});
+
+Route::prefix('vnp-sandbox')->name('vnpay.')->group(function () {
+    Route::get('/pay', [VnpSandboxController::class, 'index'])->name('sandbox');
+    Route::post('/process', [VnpSandboxController::class, 'process'])->name('process');
+    Route::get('/return', [VnpSandboxController::class, 'return'])->name('return');
+    Route::get('/ipn', [VnpSandboxController::class, 'ipn'])->name('ipn');
 });
 
 Route::get('/', [OrderController::class, 'index'])->name('home');

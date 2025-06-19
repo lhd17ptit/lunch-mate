@@ -11,4 +11,9 @@ class Transaction extends Model
 
     protected $table = 'transactions';
     protected $guarded = [];
+
+	const STATUS_CODE = [
+		'SUCCESS' => 1,
+		'FAILED' => 2,
+	];
 }
