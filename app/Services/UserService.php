@@ -84,7 +84,7 @@ class UserService
                 $user = $this->userRepository->create($dataCategory);
             }
 
-            Mail::to($user->email)->send(new InviteUserMail($user, $password));
+            // Mail::to($user->email)->send(new InviteUserMail($user, $password));
             DB::commit();
 
             return response()->json([

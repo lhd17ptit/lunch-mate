@@ -153,14 +153,25 @@
     .block-order .order {
         background-color: #f7f7f7;
         border-radius: 10px;
-        padding: 10px;
-        margin-bottom: 15px;
+        padding: 20px;
+        padding-right: 30px;
         box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+        margin-top: 20px;
     }
     
     .block-order .order .user-name {
+        font-size: 18px;
+        font-weight: 600;
+        margin-bottom: 10px;
+        text-align: center;
+        text-decoration: underline;
+    }
+    
+    .block-order .order .order-price {
         font-size: 16px;
         font-weight: 600;
+        margin-top: 10px;
+        text-align: end;
     }
     
     .block-order .order .order-food-category {
@@ -171,7 +182,8 @@
     .block-order .order .order-delete {
         position: absolute;
         right: 10px;
-        top: 20px;
+        top: 8px;
+        font-size: 18px;
     }
     
     .block-order .btn-checkout {
@@ -186,6 +198,16 @@
         font-size: 16px;
         text-align: center;
         text-decoration: none;
+    }
+    
+    .ck-food-item {
+        width: 17px;
+        height: 17px;
+    }
+    
+    .form-check-label {
+        margin-top: 3px;
+        margin-left: 5px;
     }
     
     @media (max-width: 768px) {
