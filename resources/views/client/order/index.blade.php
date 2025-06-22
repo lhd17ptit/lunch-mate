@@ -180,6 +180,10 @@
                 </div>
             </div>
         </div>
+		{{-- hidden form to submit reroute to payment --}}
+		<form id="checkout-form" action="{{ route('checkout-order') }}" method="POST" style="display:none;">
+			@csrf
+		</form>
     @endif
 
 
@@ -373,23 +377,7 @@
                 toastr.error('Vui lòng chọn món');
                 return;
             }
-
-            $.ajax({
-                type: 'POST',
-                url: '{{ route('checkout-order') }}',
-                data: {
-                    "_token": "{{ csrf_token() }}",
-                },
-                success: function(data) {
-                    toastr.success('Đặt đơn thành công');
-                    setTimeout(() => {
-                        window.location.reload();
-                    }, 3000);
-                },
-                error: function(error) {                            
-                    toastr.error('Đặt đơn thất bại');
-                }
-            });
+            $('#checkout-form').submit();
         });
     </script>
 </body>

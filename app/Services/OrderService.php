@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
+use App\Http\Requests\VNP\ProcessPaymentRequest;
 
 class OrderService
 {
@@ -24,6 +25,7 @@ class OrderService
     protected $orderRepository;
     protected $orderServingRepository;
     protected $orderServingFoodItemRepository;
+    protected $vnpayService;
     
     public function __construct(
         FoodItemRepository $foodItemRepository,
@@ -31,7 +33,8 @@ class OrderService
         UserRepository $userRepository,
         OrderRepository $orderRepository,
         OrderServingRepository $orderServingRepository,
-        OrderServingFoodItemRepository $orderServingFoodItemRepository
+        OrderServingFoodItemRepository $orderServingFoodItemRepository,
+        VnpayService $vnpayService,
     )
     {
         $this->foodItemRepository = $foodItemRepository;
@@ -40,6 +43,7 @@ class OrderService
         $this->orderRepository = $orderRepository;
         $this->orderServingRepository = $orderServingRepository;
         $this->orderServingFoodItemRepository = $orderServingFoodItemRepository;
+        $this->vnpayService = $vnpayService;
     }
 
     public function getTotalOrder($items)
@@ -192,8 +196,8 @@ class OrderService
     {
         $cart = session()->get('cart', []);
         // $user = $this->userRepository->find($user->id);
-
         $total = array_sum(array_column($cart, 'total'));
+		$orderCode = 'ORD-'. Str::uuid();
 
         try {
             DB::beginTransaction();
@@ -206,7 +210,7 @@ class OrderService
                 'floor_id' => $user->floor_id ?? 0,
                 'total' => $total,
                 'status' => config('constants.ORDER_STATUS_PENDING'),
-                'order_code' => 'ORD-'. Str::uuid(),
+                'order_code' => $orderCode,
             ]);
 
             foreach ($cart as $item) {
@@ -231,10 +235,18 @@ class OrderService
             session()->forget('cart');
             DB::commit();
 
-            return response()->json([
-                'status' => true,
-                'message' => 'Save order successfully'
-            ], 200);
+			//redirect to payment page
+			$request = new ProcessPaymentRequest([
+				'vnp_Amount' => ($total ?? 0) * 1000,
+				'vnp_OrderInfo' => $orderCode,
+				'ip_address' => $data['ip_address'] ?? null,
+			]);
+			return redirect()->away($this->vnpayService->processPayment($request));
+
+            // return response()->json([
+            //     'status' => true,
+            //     'message' => 'Save order successfully'
+            // ], 200);
         } catch (\Exception $e) {
             DB::rollBack();
             return response()->json([

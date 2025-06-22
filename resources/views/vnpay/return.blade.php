@@ -23,7 +23,7 @@
                     @endif
 
                     <div class="mt-3">
-                        <a href="{{ route('vnpay.sandbox') }}" class="btn btn-primary">Back to Payment Form</a>
+                        <a href="{{ route('home') }}" class="btn btn-primary">Back to Menu</a>
                     </div>
                 </div>
             </div>

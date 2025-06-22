@@ -71,6 +71,7 @@ class OrderController extends Controller
 
     public function checkoutOrder(Request $request)
     {
+		$request['ip_address'] = $request->ip() ?? null;
         return $this->orderService->checkoutOrder($request->all());
     }
 }
