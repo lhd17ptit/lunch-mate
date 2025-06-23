@@ -53,6 +53,7 @@ $(document).ready(function() {
             data: form.serialize(),
             success: function(response) {
                 if (response.redirect_url) {
+					console.log(response)
                     window.location.href = response.redirect_url;
                 } else {
                     alert('Error processing payment. Please try again.');
