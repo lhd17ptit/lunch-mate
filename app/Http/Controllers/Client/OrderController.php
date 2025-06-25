@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Repositories\FloorRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\UserRepository;
 use App\Services\OrderService;
@@ -13,21 +14,25 @@ class OrderController extends Controller
     protected $menuRepository;
     protected $orderService;
     protected $userRepository;
+    protected $floorRepository;
 
     public function __construct(
         MenuRepository $menuRepository,
         OrderService $orderService,
         UserRepository $userRepository,
+        FloorRepository $floorRepository
     )
     {
         $this->menuRepository = $menuRepository;
         $this->orderService = $orderService;
         $this->userRepository = $userRepository;
+        $this->floorRepository = $floorRepository;
     }
 
     public function index()
     {
-        $users = $this->userRepository->query()->where('status', config('constants.ACTIVE'))->whereNotNull('name')->orderBy('name', 'asc')->get();
+        $floors = $this->floorRepository->getAll();
+        $users = $this->userRepository->query()->where('status', config('constants.ACTIVE'))->where('is_from_client', false)->whereNotNull('name')->orderBy('name', 'asc')->get();
         $cart = session()->get('cart', []);
 
         $menu = $this->menuRepository->query()
@@ -50,6 +55,7 @@ class OrderController extends Controller
             'foodItems' => $foodItems,
             'users' => $users,
             'cart' => $cart,
+            'floors' => $floors
         ]);
     }
 
@@ -73,5 +79,10 @@ class OrderController extends Controller
     {
 		$request['ip_address'] = $request->ip() ?? null;
         return $this->orderService->checkoutOrder($request->all());
+    }
+
+    public function listOrder(Request $request)
+    {
+        return view('client.order-history.index');
     }
 }

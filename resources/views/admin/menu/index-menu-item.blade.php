@@ -22,7 +22,7 @@
 <input type="hidden" id="menu_id" value="{{ $menu->id }}">
 <div class="mt-1 px-3 pt-2 pb-5" style="background: white">
     <div class="row mt-5">
-        <div class="col-5 block-choose-food">
+        <div class="col-6 block-choose-food">
             <div class="text-center" style="font-size: 20px; font-weight: 600; text-decoration: underline;">Hôm nay có gì?</div>
             <div class="choose-food mt-3">
                 @if (!empty($menu->foodCategories))
@@ -67,7 +67,7 @@
                 </div>
             </div>
         </div>
-        <div class="col-7">
+        <div class="col-6">
             <div class="text-center" style="font-size: 20px; font-weight: 600; text-decoration: underline;">Chi tiết</div>
             <div class="preview-menu-today mt-3" id="preview_menu_today"></div>
         </div>

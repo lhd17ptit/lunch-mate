@@ -95,8 +95,17 @@ class OrderService
     public function addToOrder($data)
     {
         $items = $data['items'] ?? [];
-        $user_id = $data['user_id'] ?? null;
-        $user = $this->userRepository->findOrFail($user_id);
+
+        if ($data['type_user'] == 1) { // has account
+            $user_id = $data['user_id'] ?? null;
+            $user = $this->userRepository->findOrFail($user_id);
+        } else {
+            $user = $this->userRepository->create([
+                'name' => $data['user_name'],
+                'floor_id' => $data['floor_id'],
+                'is_from_client' => true
+            ]);
+        }
 
         $foodItems = $this->foodItemRepository->query()->whereIn('id', $items)->get()->keyBy('id');
         $foodCategories = $this->foodCategoryRepository->getAll()->keyBy('id');
@@ -154,7 +163,7 @@ class OrderService
         }
         
         $cart[] = [
-            'user_id' => $user_id,
+            'user_id' => $user->id,
             'user_name' => $user->name,
             'items' => $dataItems,
             'total' => $total,
@@ -179,6 +188,7 @@ class OrderService
     {
         $id = $data['id'] ?? null;
         $cart = session()->get('cart', []);
+
         unset($cart[$id]);
         session()->put('cart', $cart);
 

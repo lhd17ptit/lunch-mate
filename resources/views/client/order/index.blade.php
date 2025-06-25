@@ -78,6 +78,17 @@
                         <div class="choose-food mt-3">
                             <div class="form-check mt-0">
                                 Người đặt: <br>
+
+                                <div class="row mt-3 mb-2" style="font-size: 15px; font-weight: 400;">
+                                    <div class="col-md-6">
+                                        <input type="radio" name="type_user" value="1" checked>
+                                        <label for="type_user">Đã có tài khoản</label>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <input type="radio" name="type_user" value="2">
+                                        <label for="type_user">Người mới</label>
+                                    </div>
+                                </div>
         
                                 <select name="user_id" id="user_id" class="form-control mt-4">
                                     <option value="">Chọn người đặt</option>
@@ -85,14 +96,28 @@
                                         <option value="{{ $user->id }}">{{ $user->name }}</option>
                                     @endforeach
                                 </select>
+
+                                <div class="row new-user d-none" style="font-size: 15px; font-weight: 400;">
+                                    <div class="col-md-6 mb-2">
+                                        <input type="text" class="form-control" name="name" id="user_name" placeholder="Tên người đặt">
+                                    </div>
+                                    <div class="col-md-6">
+                                        <select class="form-control" name="floor" id="floor_id">
+                                            <option value="">Chọn tầng</option>
+                                            @foreach ($floors as $floor)
+                                                <option value="{{ $floor->id }}">{{ $floor->name }}</option>
+                                            @endforeach
+                                        </select>
+                                    </div>
+                                </div>
                             </div>
-                            <p class="text-center">-------------------------------------------------------</p>
+                            <p class="text-center">-----------------------------------------------</p>
                             @if (!empty($menu->foodCategories))
                                 @foreach ($menu->foodCategories as $foodCategory)
                                     @if (in_array($foodCategory->id, $foodCategories))
                                         <div class="form-check">
                                             <label class="form-check-label" for="food-category-{{ $foodCategory->id }}">
-                                                {{ $foodCategory->name }}
+                                                {{ $foodCategory->name }} <span style="font-size: 14px; font-weight: 400">{{ $foodCategory->key != 'com' ? '(Suất '.$foodCategory->price.',000 VND)' : '' }}</span>
                                             </label>
                                         </div>
                                         <div class="row food-item food-category-{{ $foodCategory->id }}">
@@ -102,35 +127,37 @@
                                                 $typeThree = false;
                                             @endphp
                                             @foreach ($foodCategory->foods as $food)
-                                                @if ($food->type == 1 && empty($typeOne))
-                                                    <div class="text-center col-10 mt-3">Món chính</div>
-                                                    @php
-                                                        $typeOne = true;
-                                                    @endphp
-                                                @elseif ($food->type == 2 && empty($typeTwo))
-                                                    <div class="text-center col-10 mt-3">Món phụ</div>
-                                                    @php
-                                                        $typeTwo = true;
-                                                    @endphp
-                                                @elseif ($food->type == 3 && empty($typeThree))
-                                                    <div class="text-center col-10 mt-3">Món rau</div>
-                                                    @php
-                                                        $typeThree = true;
-                                                    @endphp
+                                                @if (in_array($food->id, $foodItems))
+                                                    @if ($food->type == 1 && empty($typeOne))
+                                                        <div class="text-center col-10 mt-3">Món chính(+10k)</div>
+                                                        @php
+                                                            $typeOne = true;
+                                                        @endphp
+                                                    @elseif ($food->type == 2 && empty($typeTwo))
+                                                        <div class="text-center col-10 mt-3">Món phụ(+5k)</div>
+                                                        @php
+                                                            $typeTwo = true;
+                                                        @endphp
+                                                    @elseif ($food->type == 3 && empty($typeThree))
+                                                        <div class="text-center col-10 mt-3">Món rau(+5k)</div>
+                                                        @php
+                                                            $typeThree = true;
+                                                        @endphp
+                                                    @endif
+                                                    <div class="form-check-item {{ $foodCategory->key != 'com' ? 'col-md-3 col-6' : 'col-md-5 col-6' }}">
+                                                        <input class="form-check-input ck-food-item item-food-category-{{ $foodCategory->id }}" type="checkbox" value="{{ $food->id }}" id="food-item-{{ $food->id }}" data-id="{{ $food->id }}">
+                                                        <label class="form-check-label" for="food-item-{{ $food->id }}">
+                                                            {{ $food->name }} {{ $food->type == 4 ? '(+5k)' : '' }}
+                                                        </label>
+                                                    </div>
                                                 @endif
-                                                <div class="form-check-item {{ $foodCategory->key != 'com' ? 'col-md-3 col-6' : 'col-md-5 col-6' }}">
-                                                    <input class="form-check-input ck-food-item item-food-category-{{ $foodCategory->id }}" type="checkbox" value="{{ $food->id }}" id="food-item-{{ $food->id }}" data-id="{{ $food->id }}">
-                                                    <label class="form-check-label" for="food-item-{{ $food->id }}">
-                                                        {{ $food->name }}
-                                                    </label>
-                                                </div>
                                             @endforeach
                                         </div>
                                     @endif
                                 @endforeach
                             @endif
                         </div>
-                        <div class="mt-3" style="font-size: 18px; font-weight: 600;">Số tiền cần thanh toán: <span id="total">0</span> VND</div>
+                        <div class="mt-3 text-total-order">Số tiền cần thanh toán: <span id="total">0</span> VND</div>
 
                         <div class="d-flex justify-content-center mt-3 mb-4">
                             <button type="button" class="btn btn-primary" id="save_order">HOÀN THÀNH SUẤT</button>
@@ -178,6 +205,7 @@
                         <div class="btn-checkout">ĐẶT ĐƠN</div>
                     </div>
                 </div>
+                <div class="mt-3 text-history-order"><a href="{{ route('list-order') }}" target="_blank">Lịch sử đặt đơn <i class="fa fa-angle-double-right" aria-hidden="true"></i></a></div>
             </div>
         </div>
 		{{-- hidden form to submit reroute to payment --}}
@@ -275,6 +303,7 @@
     <script>
         $(document).ready(function() {
             $('#user_id').select2();
+            checkTypeUser();
 
             $('.btn-order-now').click(function() {
                 $('.ck-food-item').prop('checked', false);
@@ -310,16 +339,32 @@
                             $(checkbox).prop('checked', false);
                         }
                     });
+                } else {
+                    $('#total').html('0');
                 }
             });
 
             $(document).on('click', '#save_order', function() {
                 var items = [];
                 var user_id = $('#user_id').val();
-
-                if (user_id == '') {
-                    toastr.error('Vui lòng chọn người đặt');
-                    return;
+                var user_name = $('#user_name').val();
+                var floor_id = $('#floor_id').val();
+                var type_user = $('input[name="type_user"]:checked').val();
+            
+                if (type_user == 2) {
+                    if (user_name == '') {
+                        toastr.error('Người đặt không được để trống');
+                        return;
+                    }
+                    if (floor_id == '') {
+                        toastr.error('Tầng không được để trống');
+                        return;
+                    }
+                } else {
+                    if (user_id == '') {
+                        toastr.error('Vui lòng chọn người đặt');
+                        return;
+                    }
                 }
 
                 $('.ck-food-item').each(function() {
@@ -336,13 +381,22 @@
                         data: {
                             "_token": "{{ csrf_token() }}",
                             items: items,
+                            type_user: type_user,
                             user_id: user_id,
+                            user_name: user_name,
+                            floor_id: floor_id
                         },
                         success: function(data) {
                             $('#order-list').html(data.data.view);
-                            $('#user_id').val('');
+                            $('#user_id').val(null).trigger('change');
                             $('.ck-food-item').prop('checked', false);
                             $('#total').html('0');
+
+                            $('input[name="type_user"][value="1"]').prop('checked', true);
+                            $('#user_id').next('.select2-container').removeClass('d-none');
+                            $('.new-user').addClass('d-none');
+                            $('#user_name').val('');
+                            $('#floor_id').val('');
                         },
                         error: function(error) {                            
                             toastr.error(error.responseJSON.message);
@@ -379,6 +433,22 @@
             }
             $('#checkout-form').submit();
         });
+
+        $(document).on('change', 'input[name="type_user"]', function() {
+            checkTypeUser();
+        });
+
+        function checkTypeUser() {
+            var type_user = $('input[name="type_user"]:checked').val();
+            
+            if (type_user == 2) {
+                $('#user_id').next('.select2-container').addClass('d-none');
+                $('.new-user').removeClass('d-none');
+            } else {
+                $('#user_id').next('.select2-container').removeClass('d-none');
+                $('.new-user').addClass('d-none');
+            }
+        }
     </script>
 </body>
 </html>
