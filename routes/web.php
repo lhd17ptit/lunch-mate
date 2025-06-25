@@ -129,6 +129,7 @@ Route::post('/get-total-order', [OrderController::class, 'getTotalOrder'])->name
 Route::post('/add-to-order', [OrderController::class, 'addToOrder'])->name('add-to-order');
 Route::post('/remove-item-to-order', [OrderController::class, 'removeItemToOrder'])->name('remove-item-to-order');
 Route::post('/checkout-order', [OrderController::class, 'checkoutOrder'])->name('checkout-order');
+Route::get('/list-order', [OrderController::class, 'listOrder'])->name('list-order');
 
 
 
