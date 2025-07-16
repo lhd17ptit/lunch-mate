@@ -12,6 +12,7 @@ use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
+use App\Http\Controllers\PayOsController;
 use App\Http\Controllers\VnpSandboxController;
 use Illuminate\Support\Facades\Route;
 
@@ -122,6 +123,13 @@ Route::prefix('vnp-sandbox')->name('vnpay.')->group(function () {
     Route::post('/process', [VnpSandboxController::class, 'process'])->name('process');
     Route::get('/return', [VnpSandboxController::class, 'return'])->name('return');
     Route::get('/ipn', [VnpSandboxController::class, 'ipn'])->name('ipn');
+});
+
+Route::prefix('payos')->name('payos.')->group(function () {
+    Route::get('/pay', [PayOsController::class, 'index'])->name('sandbox');
+    Route::get('/test-process', [PayOsController::class, 'testProcess'])->name('test-process');
+    Route::post('/process', [PayOsController::class, 'process'])->name('process');
+    Route::get('/return', [PayOsController::class, 'return'])->name('return');
 });
 
 Route::get('/', [OrderController::class, 'index'])->name('home');
