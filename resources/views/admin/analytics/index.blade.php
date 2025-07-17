@@ -47,6 +47,7 @@
                 <th>Tầng</th>
                 <th>Ngày đặt</th>
                 <th>Tổng tiền</th>
+                <th>Trạng thái</th>
                 <th>Hành động</th>
             </tr>
         </thead>
@@ -98,6 +99,7 @@
                     { data: 'floor', name: 'floor',  class: 'align-middle', orderable: false },
                     { data: 'created_at', name: 'created_at',  class: 'align-middle', orderable: false },
                     { data: 'amount', name: 'amount',  class: 'align-middle', orderable: false },
+                    { data: 'status', name: 'status',  class: 'align-middle', orderable: false },
                     {data: 'action', name: 'action', class: 'align-middle', orderable: false, searchable: false},
                 ]
             });

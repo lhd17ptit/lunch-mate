@@ -309,6 +309,9 @@ class OrderService
             ->addColumn('amount', function ($item) {
                 return $item->amount.',000';
             })
+            ->addColumn('status', function ($item) {
+                return config("constants.ORDER_STATUS_TEXT." . $item->order->status);
+            })
             ->addColumn('action', function ($item) {
                 return '<a class="btn btn-danger btn-detail btn-sm mr-1" data-id="'.$item->id.'"><i class="fa fa-eye text-white"></i></a>';
             })
