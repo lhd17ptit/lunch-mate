@@ -6,6 +6,7 @@ return [
     'ORDER_STATUS_PENDING' => 2,
     'ORDER_STATUS_SUCCESS' => 1,
     'ORDER_STATUS_FAILED' => 3,
+    'ORDER_STATUS_CANCELLED' => 4,
 
     'VNP' => [
         'PREFIX' => 'vnp_',
