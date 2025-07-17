@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
+use App\Models\Order;
 use App\Repositories\FloorRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\UserRepository;
@@ -29,8 +30,20 @@ class OrderController extends Controller
         $this->floorRepository = $floorRepository;
     }
 
-    public function index()
+    public function index(Request $request)
     {
+
+        // handle cancel payment
+        if(($request->cancel ?? null) == 'true'){
+            $orderCode = $request->orderCode;
+            $order = Order::where('order_code', $orderCode)->first();
+            if(!empty($order)){
+                $order->update([
+                    'status' => config('constants.ORDER_STATUS_CANCELLED'),
+                ]);
+            }
+        }
+
         $floors = $this->floorRepository->getAll();
         $users = $this->userRepository->query()->where('status', config('constants.ACTIVE'))->where('is_from_client', false)->whereNotNull('name')->orderBy('name', 'asc')->get();
         $cart = session()->get('cart', []);
