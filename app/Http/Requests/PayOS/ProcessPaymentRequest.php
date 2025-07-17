@@ -25,7 +25,8 @@ class ProcessPaymentRequest extends FormRequest
     {
         return [
             'amount' => 'required|numeric|min:1000',
-            'description' => 'required|string|max:255',
+            'description' => 'required|string|max:25',
+            'code' => 'nullable|string|max:255',
         ];
     }
 }

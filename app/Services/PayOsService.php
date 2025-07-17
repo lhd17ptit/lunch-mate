@@ -3,6 +3,8 @@
 namespace App\Services;
 
 use App\Http\Requests\PayOS\ProcessPaymentRequest;
+use App\Models\Order;
+use App\Models\PayOsWebhookPayload;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -27,9 +29,9 @@ class PayOsService
         $inputData = [
             "amount" => (int)(($request->amount ?? 0)),
             "description" => $request->description ?? null,
-            "orderCode" => $transactionReference,
+            "orderCode" => $request->code ?? now()->timestamp,
             "returnUrl" => URL::route('payos.return', [], true),
-            "cancelUrl" => URL::route('payos.return', [], true),
+            "cancelUrl" => URL::route('home', [], true),
             "expiredAt" => now()->addMinutes(5)->timestamp,
         ];
         // $userId = auth()->id() ?? null;
@@ -96,11 +98,32 @@ class PayOsService
     }
 
     public function handleWebhook($data){
+        // log payload
+        $orderCode = data_get($data, 'data.orderCode');
+        PayOsWebhookPayload::store([
+            'order_code' => $orderCode,
+            'payload' => json_encode($data),
+        ]);
+        
         $check = $this->validatePayload($data);
         if($check){
             // TODO update order/transaction
+            $order = Order::where('order_code', $orderCode)->first();
 
-            return response()->json(['message' => 'Ok'], 200);
+            if(!empty($order)){
+                $code = data_get($data, 'data.code');
+                if($code == config('constants.PAYOS.SUCCESS_CODE')){
+                    $order->status = config('constants.ORDER_STATUS_SUCCESS');
+                } else {
+                    $order->status = config('constants.ORDER_STATUS_FAILED');
+                    // TODO handle other cases, default: update order status to false
+                }
+
+                $order->save();
+                return response()->json(['message' => 'Success'], 200);
+            }
+
+            return response()->json(['message' => 'Order not found'], 404);
         }
 
         return response()->json(['message' => 'Mismatch signature'], 400);
