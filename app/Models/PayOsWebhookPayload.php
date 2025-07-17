@@ -10,4 +10,5 @@ class PayOsWebhookPayload extends Model
     use HasFactory;
 
     protected $table = 'payos_webhook_payloads';
+    protected $guarded = [];
 }

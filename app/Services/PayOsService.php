@@ -100,7 +100,7 @@ class PayOsService
     public function handleWebhook($data){
         // log payload
         $orderCode = data_get($data, 'data.orderCode');
-        PayOsWebhookPayload::store([
+        PayOsWebhookPayload::create([
             'order_code' => $orderCode,
             'payload' => json_encode($data),
         ]);
