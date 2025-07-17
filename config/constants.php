@@ -3,13 +3,13 @@
 return [
     'ACTIVE' => 1,
     'INACTIVE' => 0,
-    'ORDER_STATUS_PENDING' => 2,
     'ORDER_STATUS_SUCCESS' => 1,
+    'ORDER_STATUS_PENDING' => 2,
     'ORDER_STATUS_FAILED' => 3,
     'ORDER_STATUS_CANCELLED' => 4,
     'ORDER_STATUS_TEXT' => [
-        1 => 'Pending',
-        2 => 'Success',
+        1 => 'Success',
+        2 => 'Pending',
         3 => 'Failed',
         4 => 'Cancelled',
     ],
