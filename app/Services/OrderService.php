@@ -15,6 +15,7 @@ use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\VNP\ProcessPaymentRequest;
+use App\Http\Requests\PayOS\ProcessPaymentRequest as PayOsPaymentRequest;
 
 class OrderService
 {
@@ -26,6 +27,7 @@ class OrderService
     protected $orderServingRepository;
     protected $orderServingFoodItemRepository;
     protected $vnpayService;
+    protected $payOsService;
     
     public function __construct(
         FoodItemRepository $foodItemRepository,
@@ -35,6 +37,7 @@ class OrderService
         OrderServingRepository $orderServingRepository,
         OrderServingFoodItemRepository $orderServingFoodItemRepository,
         VnpayService $vnpayService,
+        PayOsService $payOsService,
     )
     {
         $this->foodItemRepository = $foodItemRepository;
@@ -44,6 +47,7 @@ class OrderService
         $this->orderServingRepository = $orderServingRepository;
         $this->orderServingFoodItemRepository = $orderServingFoodItemRepository;
         $this->vnpayService = $vnpayService;
+        $this->payOsService = $payOsService;
     }
 
     public function getTotalOrder($items)
@@ -207,7 +211,7 @@ class OrderService
         $cart = session()->get('cart', []);
         // $user = $this->userRepository->find($user->id);
         $total = array_sum(array_column($cart, 'total'));
-		$orderCode = 'ORD-'. Str::uuid();
+		$orderCode = now()->timestamp;
 
         try {
             DB::beginTransaction();
@@ -246,12 +250,20 @@ class OrderService
             DB::commit();
 
 			//redirect to payment page
-			$request = new ProcessPaymentRequest([
-				'vnp_Amount' => ($total ?? 0) * 1000,
-				'vnp_OrderInfo' => $orderCode,
-				'ip_address' => $data['ip_address'] ?? null,
+			// $request = new ProcessPaymentRequest([
+			// 	'vnp_Amount' => ($total ?? 0) * 1000,
+			// 	'vnp_OrderInfo' => $orderCode,
+			// 	'ip_address' => $data['ip_address'] ?? null,
+			// ]);
+			// return redirect()->away($this->vnpayService->processPayment($request));
+
+			//redirect to payment page - PayOS
+			$request = new PayOsPaymentRequest([
+				'amount' => ($total ?? 0) * 1000,
+				'description' => $orderCode,
+                'code' => $orderCode,
 			]);
-			return redirect()->away($this->vnpayService->processPayment($request));
+			return redirect()->away($this->payOsService->processPayment($request));
 
             // return response()->json([
             //     'status' => true,
