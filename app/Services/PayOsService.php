@@ -107,6 +107,16 @@ class PayOsService
         
         $check = $this->validatePayload($data);
         if($check){
+
+            // validate webhook register
+            if($orderCode == '123'){
+                $amount = data_get($data, 'data.amount');
+                $accountNumber = data_get($data, 'data.accountNumber');
+                if($amount == 3000 && $accountNumber == '12345678'){
+                    return response()->json(['message' => 'Success'], 200);
+                }
+            }
+
             // TODO update order/transaction
             $order = Order::where('order_code', $orderCode)->first();
 
