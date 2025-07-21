@@ -96,6 +96,10 @@ class OrderController extends Controller
 
     public function listOrder(Request $request)
     {
-        return view('client.order-history.index');
+        $listOrders = $this->orderService->getListOrder($request->all());
+
+        return view('client.order-history.index', [
+            'listOrders' => $listOrders,
+        ]);
     }
 }

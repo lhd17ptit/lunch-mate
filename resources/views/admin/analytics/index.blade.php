@@ -42,7 +42,7 @@
             </div>
 
             <div class="form-group position-relative">
-                <input type="date" name="search_date" class="form-control input-food ml-3" id="search_date" placeholder="Nhập ngày ..." maxlength="250" style="width: 200px">
+                <input type="date" name="search_date" class="form-control input-food ml-3" id="search_date" placeholder="Nhập ngày ..." maxlength="250" value="{{ date('Y-m-d') }}" style="width: 200px">
             </div>
         </div>
         
