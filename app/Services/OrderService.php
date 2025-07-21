@@ -283,6 +283,12 @@ class OrderService
     {
         {
             $items = $this->orderServingRepository->query();
+
+            if (!empty($data['status'])) {
+                $items->whereHas('order', function ($query) use ($data) {
+                    $query->where('status', $data['status']);
+                });
+            }
     
             if (!empty($data['search_date'])) {
                 $items->whereDate('created_at', $data['search_date']);

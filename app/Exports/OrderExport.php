@@ -2,6 +2,7 @@
 
 namespace App\Exports;
 
+use App\Models\Order;
 use App\Repositories\OrderServingRepository;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\ShouldAutoSize;
@@ -46,6 +47,12 @@ class OrderExport  implements WithTitle, ShouldAutoSize, WithHeadings, FromColle
         $orderServingRepository = app(OrderServingRepository::class);
 
         $items = $orderServingRepository->query();
+
+        if (!empty($data['status'])) {
+            $items->whereHas('order', function ($query) use ($data) {
+                $query->where('status', $data['status']);
+            });
+        }
 
         if (!empty($data['search_date'])) {
             $items->whereDate('created_at', $data['search_date']);

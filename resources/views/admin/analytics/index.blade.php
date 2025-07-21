@@ -32,6 +32,16 @@
             </div>
 
             <div class="form-group position-relative">
+                <select class="form-control input-food ml-3" id="status" style="width: 250px;">
+                    <option value="">Tìm kiếm theo trạng thái</option>
+                    <option value="{{ config('constants.ORDER_STATUS_SUCCESS') }}">Success</option>
+                    <option value="{{ config('constants.ORDER_STATUS_CANCEL') }}">Cancel</option>
+                    <option value="{{ config('constants.ORDER_STATUS_PENDING') }}">Pending</option>
+                    <option value="{{ config('constants.ORDER_STATUS_FAILED') }}">Failed</option>
+                </select>
+            </div>
+
+            <div class="form-group position-relative">
                 <input type="date" name="search_date" class="form-control input-food ml-3" id="search_date" placeholder="Nhập ngày ..." maxlength="250" style="width: 200px">
             </div>
         </div>
@@ -92,6 +102,7 @@
                     data : function(d) {
                         d.search_floor = $('#search_floor').val();
                         d.search_date = $('#search_date').val();
+                        d.status = $('#status').val();
                     }
                 },
                 columns: [
@@ -111,6 +122,10 @@
             });
 
             $('#search_floor').on('change', function() {
+                $('#example').DataTable().draw();
+            });
+
+            $('#status').on('change', function() {
                 $('#example').DataTable().draw();
             });
 
@@ -148,7 +163,8 @@
         $(document).on('click', '.btn-export', function () {
             var search_floor = $('#search_floor').val();
             var search_date = $('#search_date').val();
-            window.location.href = '{{ route('admin.analytics.export') }}?search_floor=' + search_floor + '&search_date=' + search_date;
+            var status = $('#status').val();
+            window.location.href = '{{ route('admin.analytics.export') }}?search_floor=' + search_floor + '&search_date=' + search_date + '&status=' + status;
         });
 </script>
 @endpush
