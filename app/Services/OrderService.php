@@ -343,4 +343,19 @@ class OrderService
             ]
         ], 200);
     }
+
+    public function getListOrder()
+    {
+        $items = $this->orderServingRepository->query();
+
+        $items->whereHas('order', function ($query) {
+            $query->where('status', config('constants.ORDER_STATUS_SUCCESS'));
+        });
+    
+        $items->whereDate('created_at', date('Y-m-d', time()));
+    
+        $items = $items->orderBy('id', 'asc')->get();
+
+        return $items;
+    }
 }

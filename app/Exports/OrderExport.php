@@ -32,11 +32,10 @@ class OrderExport  implements WithTitle, ShouldAutoSize, WithHeadings, FromColle
     public function headings(): array
     {
         return [
+            'STT',
             'Tên khách hàng',
-            'Tầng',
-            'Ngày đặt',
-            'Tổng tiền',
             'Món',
+            'Tiền'
         ];
     }
 
@@ -64,7 +63,11 @@ class OrderExport  implements WithTitle, ShouldAutoSize, WithHeadings, FromColle
             });
         }
         
-        $items = $items->orderBy('id', 'desc')->get();
+        $items = $items->orderBy('id', 'asc')->get();
+
+        $items->each(function ($item, $key) {
+            $item->index = $key + 1;
+        });
 
         return $items;
     }
@@ -87,11 +90,10 @@ class OrderExport  implements WithTitle, ShouldAutoSize, WithHeadings, FromColle
         $foods = !empty($foodItemName) ? $foodCategoryName . ' ' . $foodItemName : $foodCategoryName;
 
         return [
+            $item->index,
             $item->user->name ?? 'Chưa xác định',
-            $item->user->floor->name ?? 'Chưa xác định',
-            date('d/m/Y', strtotime($item->created_at)),
-            $item->amount.',000',
             $foods,
+            $item->amount.',000'
         ];
     }
 
