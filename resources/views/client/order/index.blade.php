@@ -160,7 +160,11 @@
                                                         @endphp
                                                     @endif
                                                     <div class="form-check-item {{ $foodCategory->key != 'com' ? 'col-md-3 col-6' : 'col-md-5 col-6' }}">
-                                                        <input class="form-check-input ck-food-item item-food-category-{{ $foodCategory->id }}" type="checkbox" value="{{ $food->id }}" id="food-item-{{ $food->id }}" data-id="{{ $food->id }}">
+                                                        <input class="form-check-input ck-food-item item-food-category-{{ $foodCategory->id }}" type="checkbox" value="{{ $food->id }}" id="food-item-{{ $food->id }}" data-id="{{ $food->id }}"
+                                                            @if (in_array($food->id, $selectedItemIds))
+                                                                checked
+                                                            @endif
+                                                        >
                                                         <label class="form-check-label" for="food-item-{{ $food->id }}">
                                                             {{ $food->name }} {{ $food->type == 4 ? '(+5k)' : '' }}
                                                         </label>
@@ -327,7 +331,7 @@
                 $('#exampleModalCenter').modal('show');
             });
 
-            $(document).on('change', '.ck-food-item', function() {
+            function updateServingTotal(){
                 var items = [];
                 const checkbox = this;
 
@@ -357,7 +361,13 @@
                 } else {
                     $('#total').html('0');
                 }
+            }
+
+            $(document).on('change', '.ck-food-item', function() {
+                updateServingTotal()
             });
+
+            updateServingTotal();
 
             $(document).on('click', '#save_order', function() {
                 var items = [];
