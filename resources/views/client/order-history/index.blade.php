@@ -34,11 +34,10 @@
                             $foodItemName = [];
                         @endphp
                         @foreach ($order->orderServingFoodItems as $item)
-                            @if (!empty($item->foodItem->foodCategory) && empty($foodCategoryName) && $item->foodItem->foodCategory->key != 'com')
-                                {{ $item->foodItem->foodCategory->name }}
-                            @endif
                             @php
-                                $foodCategoryName = true;
+                                if (!empty($item->foodItem->foodCategory) && empty($foodCategoryName) && $item->foodItem->foodCategory->key != 'com') {
+                                    $foodCategoryName = $item->foodItem->foodCategory->name ?? '';
+                                }
                                 $foodItemName[] = $item->foodItem->name ?? null;
                             @endphp
                         @endforeach
@@ -49,7 +48,7 @@
                             <td>{{ $order->amount.',000' }}</td>
                             <td>
                                 @if (!empty($foodItemName))
-                                    {{ implode(' + ', array_filter($foodItemName)) }}
+                                    {{ (!empty($foodCategoryName) ? $foodCategoryName . ' ' : '') . implode(' + ', array_filter($foodItemName)) }}
                                 @else
                                     Chưa xác định
                                 @endif
