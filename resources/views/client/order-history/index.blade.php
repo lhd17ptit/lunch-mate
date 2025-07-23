@@ -31,6 +31,9 @@
                 <tbody>
                     @foreach($listOrders as $index => $order)
                         @php
+                            $highlightRow = false;
+                            $currentOrderCode = $order->order->order_code ?? null;
+                            if($currentOrderCode == (request()->orderCode ?? null)) $highlightRow = true;
                             $foodCategoryName = '';
                             $foodItemName = [];
                         @endphp
@@ -42,7 +45,11 @@
                                 $foodItemName[] = $item->foodItem->name ?? null;
                             @endphp
                         @endforeach
-                        <tr>
+                        <tr 
+                            @if ($highlightRow)
+                                class="glow-bg"
+                            @endif
+                        >
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $order->user->name ?? 'Chưa xác định' }}</td>
                             <td>{{ $order->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i') }}</td>
@@ -80,6 +87,15 @@
             url = new URL("{{ route('home') }}");
             foodItemIds.forEach(id => url.searchParams.append('selectedItemIds[]', id));
             window.location.href = url.toString();
+        })
+
+        $(document).ready(function(){
+            $target = $('.glow-bg').first();
+            if ($target.length) {
+                $('html, body').animate({
+                scrollTop: $target.offset().top - ($(window).height() / 2) + ($target.outerHeight() / 2)
+                }, 1000); // 1000ms
+            }
         })
     </script>
 
