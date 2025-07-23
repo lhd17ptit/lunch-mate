@@ -25,12 +25,12 @@ class PayOsService
     public function processPayment(ProcessPaymentRequest|Request $request)
     {
         date_default_timezone_set('Asia/Ho_Chi_Minh');
-        $transactionReference = time();
+        // $transactionReference = time();
         $inputData = [
             "amount" => (int)(($request->amount ?? 0)),
             "description" => $request->description ?? null,
             "orderCode" => $request->code ?? now()->timestamp,
-            "returnUrl" => URL::route('payos.return', [], true),
+            "returnUrl" => URL::route('list-order', true),
             "cancelUrl" => URL::route('home', [], true),
             "expiredAt" => now()->addMinutes(5)->timestamp,
         ];

@@ -354,7 +354,7 @@ class OrderService
     
         $items->whereDate('created_at', date('Y-m-d', time()));
     
-        $items = $items->orderBy('id', 'asc')->get();
+        $items = $items->with(['orderServingFoodItems', 'orderServingFoodItems.foodItem', 'orderServingFoodItems.foodItem.foodCategory', 'user'])->orderBy('id', 'asc')->get();
 
         return $items;
     }
