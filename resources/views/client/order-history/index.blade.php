@@ -25,6 +25,7 @@
                         <th>Ngày đặt</th>
                         <th>Tổng tiền</th>
                         <th>Chi tiết</th>
+                        <th>Hành động</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -53,6 +54,9 @@
                                     Chưa xác định
                                 @endif
                             </td>
+                            <td>
+                                <button class="btn btn-primary clone-serving" data-order-serving-id="{{ $order->orderServingFoodItems->pluck('food_item_id') }}">Copy</button>
+                            </td>
                         </tr>
                     @endforeach
                 </tbody>
@@ -69,5 +73,15 @@
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
     <script src="{{ asset('admin/assets/js/toastr.js') }}"></script>
+
+    <script>
+        $('.clone-serving').on('click', function() {
+            foodItemIds = $(this).data('order-serving-id');
+            url = new URL("{{ route('home') }}");
+            foodItemIds.forEach(id => url.searchParams.append('selectedItemIds[]', id));
+            window.location.href = url.toString();
+        })
+    </script>
+
 </body>
 </html>

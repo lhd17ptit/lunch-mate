@@ -68,7 +68,8 @@ class OrderController extends Controller
             'foodItems' => $foodItems,
             'users' => $users,
             'cart' => $cart,
-            'floors' => $floors
+            'floors' => $floors,
+            'selectedItemIds' => $request->selectedItemIds ?? [],
         ]);
     }
 
