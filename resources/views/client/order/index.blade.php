@@ -4,7 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lunch Mate</title>
+    <title>LunchMate - Đặt Cơm Văn Phòng Nhanh & Ngon</title>
+    <meta name="description" content="Đặt cơm văn phòng tại tòa nhà Sông Đà nhanh chóng, đa dạng món ăn, giao cơm tận nơi, đảm bảo nóng hổi và ngon miệng mỗi ngày.">
+    <meta name="keywords" content="đặt cơm Sông Đà, cơm văn phòng Sông Đà, giao cơm tòa nhà Sông Đà, cơm trưa văn phòng Hà Nội, đặt cơm nhanh Sông Đà, lunchmate, cơm văn phòng">
+    <meta name="author" content="Lunch Mate">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Đặt Cơm Văn Phòng Tòa Nhà Sông Đà - Ngon, Nhanh, Tiện Lợi">
+    <meta property="og:description" content="Dịch vụ giao cơm văn phòng chuyên nghiệp tại tòa nhà Sông Đà. Đặt cơm nhanh - Giao đúng giờ - Món ăn đa dạng.">
+    <meta property="og:image" content="{{ asset('admin/assets/images/logos/banner.jpg') }}">
+    <meta property="og:url" content="https://lunchmate.online/">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="{{ asset('admin/assets/favicon_io/favicon-32x32.png') }}" sizes="32x32">
+    <link rel="canonical" href="https://lunchmate.online/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
@@ -12,6 +25,7 @@
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
+    <h1 class="visually-hidden">LunchMate - Đặt Cơm Văn Phòng Tòa Nhà Sông Đà</h1>
     @if (empty($menu))
         <img src="{{ asset('admin/assets/images/backgrounds/coming-soon-page.webp') }}" alt="logo" style="width: 100%; height: 100vh; object-fit: cover;">
     @else
