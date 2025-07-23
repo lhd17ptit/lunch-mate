@@ -10,6 +10,7 @@
     <meta name="author" content="Lunch Mate">
     <meta name="robots" content="index, follow">
 
+    <meta name="google-site-verification" content="bkb8Ilc2n-HrbdTGx2btcD9g2uuYj7GdiAwa-Wfqin0" />
     <meta property="og:title" content="Đặt Cơm Văn Phòng Tòa Nhà Sông Đà - Ngon, Nhanh, Tiện Lợi">
     <meta property="og:description" content="Dịch vụ giao cơm văn phòng chuyên nghiệp tại tòa nhà Sông Đà. Đặt cơm nhanh - Giao đúng giờ - Món ăn đa dạng.">
     <meta property="og:image" content="{{ asset('admin/assets/images/logos/banner.jpg') }}">
