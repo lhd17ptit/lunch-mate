@@ -6,14 +6,14 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <title>LunchMate - Đặt Cơm Văn Phòng Nhanh & Ngon</title>
     <meta name="description" content="Đặt cơm văn phòng tại tòa nhà Sông Đà nhanh chóng, đa dạng món ăn, giao cơm tận nơi, đảm bảo nóng hổi và ngon miệng mỗi ngày.">
-    <meta name="keywords" content="đặt cơm Sông Đà, cơm văn phòng Sông Đà, giao cơm tòa nhà Sông Đà, cơm trưa văn phòng Hà Nội, đặt cơm nhanh Sông Đà, lunchmate, cơm văn phòng">
+    <meta name="keywords" content="đặt cơm, cơm văn phòng, Sông Đà, giao cơm, cơm trưa văn phòng, đặt cơm nhanh, lunchmate, Mễ Trì, Phạm Hùng">
     <meta name="author" content="Lunch Mate">
     <meta name="robots" content="index, follow">
 
     <meta name="google-site-verification" content="bkb8Ilc2n-HrbdTGx2btcD9g2uuYj7GdiAwa-Wfqin0" />
     <meta property="og:title" content="Đặt Cơm Văn Phòng Tòa Nhà Sông Đà - Ngon, Nhanh, Tiện Lợi">
     <meta property="og:description" content="Dịch vụ giao cơm văn phòng chuyên nghiệp tại tòa nhà Sông Đà. Đặt cơm nhanh - Giao đúng giờ - Món ăn đa dạng.">
-    <meta property="og:image" content="{{ asset('admin/assets/images/logos/banner.jpg') }}">
+    <meta property="og:image" content="{{ asset('admin/assets/images/logos/new-banner.png') }}">
     <meta property="og:url" content="https://lunchmate.online/">
     <meta property="og:type" content="website">
 
