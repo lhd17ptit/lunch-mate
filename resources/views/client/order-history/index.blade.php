@@ -4,7 +4,19 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Lịch sử đơn hàng</title>
+    <title>Lịch Sử Đơn Hàng | LunchMate</title>
+    <meta name="description" content="Dịch vụ giao cơm văn phòng chuyên nghiệp tại tòa nhà Sông Đà. Đặt cơm nhanh - Giao đúng giờ - Món ăn đa dạng.">
+    <meta name="keywords" content="đặt cơm, cơm văn phòng, Sông Đà, giao cơm, cơm trưa văn phòng, đặt cơm nhanh, lunchmate, Mễ Trì, Phạm Hùng">
+    <meta name="author" content="Lunch Mate">
+    <meta name="robots" content="index, follow">
+
+    <meta property="og:title" content="Lịch Sử Đơn Hàng | LunchMate">
+    <meta property="og:description" content="Dịch vụ giao cơm văn phòng chuyên nghiệp tại tòa nhà Sông Đà. Đặt cơm nhanh - Giao đúng giờ - Món ăn đa dạng.">
+    <meta property="og:image" content="{{ asset('admin/assets/images/logos/new-banner.png') }}">
+    <meta property="og:url" content="https://lunchmate.online/list-order">
+    <meta property="og:type" content="website">
+
+    <link rel="icon" type="image/png" href="{{ asset('admin/assets/favicon_io/favicon-32x32.png') }}" sizes="32x32">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
