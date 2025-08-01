@@ -225,6 +225,9 @@
                     </div>
                 </div>
                 <div class="mt-3 text-history-order"><a href="{{ route('list-order') }}" target="_blank">Lịch sử đặt đơn <i class="fa fa-angle-double-right" aria-hidden="true"></i></a></div>
+                <div class="w-100 d-flex justify-content-center mt-5">
+                    <img src="{{ asset('client/assets/images/lunchdog.png') }}">
+                </div>
             </div>
         </div>
 		{{-- hidden form to submit reroute to payment --}}
