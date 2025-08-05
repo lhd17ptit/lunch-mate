@@ -211,7 +211,7 @@ class OrderService
         $cart = session()->get('cart', []);
         // $user = $this->userRepository->find($user->id);
         $total = array_sum(array_column($cart, 'total'));
-		$orderCode = now()->timestamp . rand(0,999);
+		$orderCode = now()->timestamp;
 
         try {
             DB::beginTransaction();
