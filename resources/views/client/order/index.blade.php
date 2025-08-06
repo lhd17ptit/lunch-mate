@@ -19,7 +19,7 @@
 
     <link rel="icon" type="image/png" href="{{ asset('admin/assets/favicon_io/favicon-32x32.png') }}" sizes="32x32">
     <link rel="canonical" href="https://lunchmate.online/">
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
     <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
@@ -209,11 +209,27 @@
                                 </div>
                             </div>
                             @endforeach
-                            <div class="total-order">
+                            <div class="total-order d-flex flex-column align-items-center">
                                 @php
                                     $total = array_sum(array_column($cart, 'total'));
                                 @endphp
-                                <div class="total-order-text mt-3"><b>Tổng tiền</b>: {{ $total }},000 VND</div>
+                                <div class="mt-5 mb-3 fs-5">
+                                    <b>Tip thêm cho nhà phát triển</b>
+                                </div>
+                                <div class="btn-group tip-options w-100" role="group">
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-0" autocomplete="off" value="0" checked>
+                                    <label class="btn btn-outline-success" for="tip-0">0đ</label>
+
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-500" autocomplete="off" value="0.5">
+                                    <label class="btn btn-outline-success" for="tip-500">500đ</label>
+
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-1000" autocomplete="off" value="1">
+                                    <label class="btn btn-outline-success" for="tip-1000">1000đ</label>
+
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-2000" autocomplete="off" value="2">
+                                    <label class="btn btn-outline-success" for="tip-2000">2000đ</label>
+                                </div>
+                                <div class="total-order-text mt-3 fs-5"><b>Tổng tiền: <span class="total-order-amount" data-total="{{$total}}">{{ number_format($total * 1000, 0, ',') }}</span> VND</b></div>
                             </div> 
                         @else
                             Không có đơn đặt hôm nay
@@ -233,6 +249,7 @@
 		{{-- hidden form to submit reroute to payment --}}
 		<form id="checkout-form" action="{{ route('checkout-order') }}" method="POST" style="display:none;">
 			@csrf
+            <input type="hidden" id="tip" name="tip" value="0">
 		</form>
     @endif
 
@@ -316,7 +333,7 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> --}}
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
@@ -465,6 +482,24 @@
         $(document).on('change', 'input[name="type_user"]', function() {
             checkTypeUser();
         });
+
+        function updateTipValue(){
+            $('#tip').val($('.select-tip:checked').val())
+        }
+
+        // update total on changing tip
+        $(document).on('change', '.select-tip', function(){
+            totalValue = $('.total-order-amount').data('total') * 1000
+            selectedTipAmount = $('.select-tip:checked').val() * 1000
+            newTotalAmount = totalValue + selectedTipAmount
+            $('.total-order-amount').text(newTotalAmount.toLocaleString('en-US'))
+            updateTipValue()
+        });
+
+        $(document).ready(function() {
+            $('.select-tip').change()
+            updateTipValue();
+        })
 
         function checkTypeUser() {
             var type_user = $('input[name="type_user"]:checked').val();
