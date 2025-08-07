@@ -216,20 +216,23 @@
                                 <div class="mt-5 mb-3 fs-5">
                                     <b>Tip thêm cho nhà phát triển</b>
                                 </div>
+                                @php
+                                    $tip = $tip ?? 0;
+                                @endphp
                                 <div class="btn-group tip-options w-100" role="group">
-                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-0" autocomplete="off" value="0" checked>
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-0" autocomplete="off" value="0" {{ $tip == 0 ? 'checked' : ''}}>
                                     <label class="btn btn-outline-success" for="tip-0">0đ</label>
 
-                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-500" autocomplete="off" value="0.5">
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-500" autocomplete="off" value="0.5" {{ $tip == 0.5 ? 'checked' : ''}}>
                                     <label class="btn btn-outline-success" for="tip-500">500đ</label>
 
-                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-1000" autocomplete="off" value="1">
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-1000" autocomplete="off" value="1" {{ $tip == 1 ? 'checked' : ''}}>
                                     <label class="btn btn-outline-success" for="tip-1000">1000đ</label>
 
-                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-2000" autocomplete="off" value="2">
+                                    <input type="radio" class="btn-check select-tip" name="tip" id="tip-2000" autocomplete="off" value="2" {{ $tip == 2 ? 'checked' : ''}}>
                                     <label class="btn btn-outline-success" for="tip-2000">2000đ</label>
                                 </div>
-                                <div class="total-order-text mt-3 fs-5"><b>Tổng tiền: <span class="total-order-amount" data-total="{{$total}}">{{ number_format($total * 1000, 0, ',') }}</span> VND</b></div>
+                                <div class="total-order-text mt-3 fs-5"><b>Tổng tiền: <span class="total-order-amount" data-total="{{$total + $tip}}">{{ number_format(($total + $tip) * 1000, 0, ',') }}</span> VND</b></div>
                             </div> 
                         @else
                             Không có đơn đặt hôm nay
@@ -248,8 +251,9 @@
         </div>
 		{{-- hidden form to submit reroute to payment --}}
 		<form id="checkout-form" action="{{ route('checkout-order') }}" method="POST" style="display:none;">
-			@csrf
-            <input type="hidden" id="tip" name="tip" value="0">
+            @csrf
+            {{-- DEFAULT 0.5 TIP --}}
+            <input type="hidden" id="tip" name="tip" value="{{$tip ?? 0.5}}">
 		</form>
     @endif
 
@@ -395,6 +399,7 @@
                 var user_name = $('#user_name').val();
                 var floor_id = $('#floor_id').val();
                 var type_user = $('input[name="type_user"]:checked').val();
+                var tip = $('.select-tip:checked').val();
             
                 if (type_user == 2) {
                     if (user_name == '') {
@@ -429,7 +434,8 @@
                             type_user: type_user,
                             user_id: user_id,
                             user_name: user_name,
-                            floor_id: floor_id
+                            floor_id: floor_id,
+                            tip: tip
                         },
                         success: function(data) {
                             $('#order-list').html(data.data.view);
@@ -453,12 +459,14 @@
 
             $(document).on('click', '.order-delete', function() {
                 var id = $(this).data('id');
+                var tip = $('.select-tip:checked').val();
                 $.ajax({
                     type: 'POST',
                     url: '{{ route('remove-item-to-order') }}',
                     data: {
                         "_token": "{{ csrf_token() }}",
                         id: id,
+                        tip: tip,
                     },
                     success: function(data) {
                         $('#order-list').html(data.data.view);
@@ -491,15 +499,10 @@
         $(document).on('change', '.select-tip', function(){
             totalValue = $('.total-order-amount').data('total') * 1000
             selectedTipAmount = $('.select-tip:checked').val() * 1000
-            newTotalAmount = totalValue + selectedTipAmount
+            newTotalAmount = totalValue + selectedTipAmount - {{ ($tip ?? 0) * 1000 }}
             $('.total-order-amount').text(newTotalAmount.toLocaleString('en-US'))
             updateTipValue()
         });
-
-        $(document).ready(function() {
-            $('.select-tip').change()
-            updateTipValue();
-        })
 
         function checkTypeUser() {
             var type_user = $('input[name="type_user"]:checked').val();

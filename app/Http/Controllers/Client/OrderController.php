@@ -47,6 +47,7 @@ class OrderController extends Controller
         $floors = $this->floorRepository->getAll();
         $users = $this->userRepository->query()->where('status', config('constants.ACTIVE'))->where('is_from_client', false)->whereNotNull('name')->orderBy('name', 'asc')->get();
         $cart = session()->get('cart', []);
+        $tip = session()->get('tip', config('constants.DEFAULT_TIP_AMOUNT'));
 
         $menu = $this->menuRepository->query()
             ->where('status', config('constants.ACTIVE'))
@@ -70,6 +71,7 @@ class OrderController extends Controller
             'cart' => $cart,
             'floors' => $floors,
             'selectedItemIds' => $request->selectedItemIds ?? [],
+            'tip' => $tip,
         ]);
     }
 

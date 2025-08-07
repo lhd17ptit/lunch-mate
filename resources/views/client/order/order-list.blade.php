@@ -24,21 +24,24 @@
         <div class="mt-5 mb-3 fs-5">
             <b>Tip thêm cho nhà phát triển</b>
         </div>
+        @php
+            $tip = $tip ?? 0;
+        @endphp
         <div class="btn-group tip-options w-100" role="group">
-            <input type="radio" class="btn-check select-tip" name="tip" id="tip-0" autocomplete="off" value="0" checked>
+            <input type="radio" class="btn-check select-tip" name="tip" id="tip-0" autocomplete="off" value="0" {{ $tip == 0 ? 'checked' : ''}}>
             <label class="btn btn-outline-success" for="tip-0">0đ</label>
 
-            <input type="radio" class="btn-check select-tip" name="tip" id="tip-500" autocomplete="off" value="0.5">
+            <input type="radio" class="btn-check select-tip" name="tip" id="tip-500" autocomplete="off" value="0.5" {{ $tip == 0.5 ? 'checked' : ''}}>
             <label class="btn btn-outline-success" for="tip-500">500đ</label>
 
-            <input type="radio" class="btn-check select-tip" name="tip" id="tip-1000" autocomplete="off" value="1">
+            <input type="radio" class="btn-check select-tip" name="tip" id="tip-1000" autocomplete="off" value="1" {{ $tip == 1 ? 'checked' : ''}}>
             <label class="btn btn-outline-success" for="tip-1000">1000đ</label>
 
-            <input type="radio" class="btn-check select-tip" name="tip" id="tip-2000" autocomplete="off" value="2">
+            <input type="radio" class="btn-check select-tip" name="tip" id="tip-2000" autocomplete="off" value="2" {{ $tip == 2 ? 'checked' : ''}}>
             <label class="btn btn-outline-success" for="tip-2000">2000đ</label>
         </div>
-        <div class="total-order-text mt-3 fs-5"><b>Tổng tiền: <span class="total-order-amount" data-total="{{$total}}">{{ number_format($total * 1000, 0, ',') }}</span> VND</b></div>
-    </div> 
+        <div class="total-order-text mt-3 fs-5"><b>Tổng tiền: <span class="total-order-amount" data-total="{{$total + $tip}}">{{ number_format(($total + $tip) * 1000, 0, ',') }}</span> VND</b></div>
+    </div>
 @else
     Không có đơn đặt hôm nay
 @endif

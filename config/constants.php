@@ -13,6 +13,7 @@ return [
         3 => 'Failed',
         4 => 'Cancelled',
     ],
+    'DEFAULT_TIP_AMOUNT' => 0.5,
 
     'VNP' => [
         'PREFIX' => 'vnp_',

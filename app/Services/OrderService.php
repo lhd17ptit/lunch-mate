@@ -119,6 +119,9 @@ class OrderService
         $foodCategory = null;
         $dataItems = [];
         $total = 0;
+        $tip = $data['tip'] ?? 0;
+        if($tip < 0) $tip = 0;
+        $total += $tip;
         foreach ($items as $item) {
             if (!empty($foodItems[$item])) {
                 if (empty($foodCategory)) {
@@ -177,6 +180,7 @@ class OrderService
         ];
 
         session()->put('cart', $cart);
+        session()->put('tip', $tip);
 
         return response()->json([
             'status' => true,
@@ -184,6 +188,7 @@ class OrderService
             'data' => [
                 'view' => view('client.order.order-list', ['cart' => $cart])->render(),
                 'count' => count($cart),
+                'tip' => $tip,
             ],
         ], 200);
     }
@@ -192,9 +197,13 @@ class OrderService
     {
         $id = $data['id'] ?? null;
         $cart = session()->get('cart', []);
+        
+        $tip = $data['tip'] ?? 0;
+        if($tip < 0) $tip = 0;
 
         unset($cart[$id]);
         session()->put('cart', $cart);
+        if(count($cart) == 0) session()->forget('tip');
 
         return response()->json([
             'status' => true,
@@ -202,6 +211,7 @@ class OrderService
             'data' => [
                 'view' => view('client.order.order-list', ['cart' => $cart])->render(),
                 'count' => count($cart),
+                'tip' => $tip,
             ],
         ], 200);
     }
@@ -213,7 +223,7 @@ class OrderService
         $total = array_sum(array_column($cart, 'total'));
 		$orderCode = now()->timestamp;
         if(!isset($data['tip']) || $data['tip'] < 0) $data['tip'] = 0;
-        $total += $data['tip'] * 1000;
+        $total += $data['tip'];
 
         try {
             DB::beginTransaction();
@@ -250,11 +260,12 @@ class OrderService
                 $this->orderServingFoodItemRepository->createMultiple($lineItems);
             }
             session()->forget('cart');
+            session()->forget('tip');
             DB::commit();
 
 			//redirect to payment page - PayOS
 			$request = new PayOsPaymentRequest([
-				'amount' => ($total ?? 0),
+				'amount' => ($total ?? 0) * 1000,
 				'description' => $orderCode,
                 'code' => $orderCode,
 			]);
