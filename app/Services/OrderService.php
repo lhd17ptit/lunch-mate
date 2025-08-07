@@ -212,6 +212,8 @@ class OrderService
         // $user = $this->userRepository->find($user->id);
         $total = array_sum(array_column($cart, 'total'));
 		$orderCode = now()->timestamp;
+        if(!isset($data['tip']) || $data['tip'] < 0) $data['tip'] = 0;
+        $total += $data['tip'] * 1000;
 
         try {
             DB::beginTransaction();
@@ -225,6 +227,7 @@ class OrderService
                 'total' => $total,
                 'status' => config('constants.ORDER_STATUS_PENDING'),
                 'order_code' => $orderCode,
+                'tip' => $data['tip'],
             ]);
 
             foreach ($cart as $item) {
@@ -249,17 +252,9 @@ class OrderService
             session()->forget('cart');
             DB::commit();
 
-			//redirect to payment page
-			// $request = new ProcessPaymentRequest([
-			// 	'vnp_Amount' => ($total ?? 0) * 1000,
-			// 	'vnp_OrderInfo' => $orderCode,
-			// 	'ip_address' => $data['ip_address'] ?? null,
-			// ]);
-			// return redirect()->away($this->vnpayService->processPayment($request));
-
 			//redirect to payment page - PayOS
 			$request = new PayOsPaymentRequest([
-				'amount' => ($total ?? 0) * 1000,
+				'amount' => ($total ?? 0),
 				'description' => $orderCode,
                 'code' => $orderCode,
 			]);
