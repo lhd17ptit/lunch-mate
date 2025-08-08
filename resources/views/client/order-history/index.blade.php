@@ -99,7 +99,7 @@
     <script>
         $('.clone-serving').on('click', function() {
             foodItemIds = $(this).data('order-serving-id');
-            url = new URL("{{ route('home') }}");
+            url = new URL("{{ route('menuByShop', ['shop' => 'lunch-mate']) }}");
             foodItemIds.forEach(id => url.searchParams.append('selectedItemIds[]', id));
             window.location.href = url.toString();
         })

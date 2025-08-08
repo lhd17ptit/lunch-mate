@@ -5,6 +5,7 @@ namespace App\Services;
 use App\Http\Requests\PayOS\ProcessPaymentRequest;
 use App\Models\Order;
 use App\Models\PayOsWebhookPayload;
+use App\Models\Shop;
 use App\Models\Transaction;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Http;
@@ -31,7 +32,7 @@ class PayOsService
             "description" => $request->description ?? null,
             "orderCode" => $request->code ?? now()->timestamp,
             "returnUrl" => URL::route('list-order', true),
-            "cancelUrl" => URL::route('home', [], true),
+            "cancelUrl" => URL::route('menuByShop', ['shop' => Shop::LUNCH_MATE], true),
             "expiredAt" => now()->addMinutes(5)->timestamp,
         ];
         // $userId = auth()->id() ?? null;

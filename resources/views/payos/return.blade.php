@@ -21,7 +21,7 @@
                     @endif
 
                     <div class="mt-3">
-                        <a href="{{ route('home') }}" class="btn btn-primary">Back to Menu</a>
+                        <a href="{{ route('menuByShop', ['shop' => 'lunch-mate']) }}" class="btn btn-primary">Back to Menu</a>
                     </div>
                 </div>
             </div>
