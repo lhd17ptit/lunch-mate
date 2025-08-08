@@ -169,6 +169,7 @@ class OrderService
         $cart[] = [
             'user_id' => $user->id,
             'user_name' => $user->name,
+            'note' => $data['note'] ?? null,
             'items' => $dataItems,
             'total' => $total,
             'price_category' => $priceCategory,
@@ -213,7 +214,7 @@ class OrderService
         $total = array_sum(array_column($cart, 'total'));
 		$orderCode = now()->timestamp;
         if(!isset($data['tip']) || $data['tip'] < 0) $data['tip'] = 0;
-        $total += $data['tip'] * 1000;
+        $total += $data['tip'];
 
         try {
             DB::beginTransaction();
@@ -235,6 +236,7 @@ class OrderService
                     'order_id' => $order->id,
                     'amount' => $item['total'],
                     'user_id' => $item['user_id'],
+                    'note' => $item['note'] ?? null,
                 ]);
 
                 $lineItems = [];
@@ -254,7 +256,7 @@ class OrderService
 
 			//redirect to payment page - PayOS
 			$request = new PayOsPaymentRequest([
-				'amount' => ($total ?? 0),
+				'amount' => ($total ?? 0) * 1000,
 				'description' => $orderCode,
                 'code' => $orderCode,
 			]);

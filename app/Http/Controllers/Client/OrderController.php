@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Client;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
+use App\Models\Shop;
 use App\Repositories\FloorRepository;
 use App\Repositories\MenuRepository;
 use App\Repositories\UserRepository;
 use App\Services\OrderService;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class OrderController extends Controller
@@ -30,7 +32,41 @@ class OrderController extends Controller
         $this->floorRepository = $floorRepository;
     }
 
-    public function index(Request $request)
+    public function landingPage()
+    {
+        $lunchMate = $this->menuRepository->query()
+            ->where('status', config('constants.ACTIVE'))
+            ->whereHas('shop', function ($q) {
+                $q->where('slug', Shop::LUNCH_MATE);
+            })
+            ->whereDate('created_at', now())
+            ->first();
+
+        $breakfastMate = $this->menuRepository->query()
+            ->where('status', config('constants.ACTIVE'))
+            ->whereHas('shop', function ($q) {
+                $q->where('slug', Shop::BREAKFAST_MATE);
+            })
+            ->whereDate('created_at', Carbon::now()->subDay())
+            ->first();
+        
+        $afternoonMate = $this->menuRepository->query()
+            ->where('status', config('constants.ACTIVE'))
+            ->whereHas('shop', function ($q) {
+                $q->where('slug', Shop::AFTERNOON_MATE);
+            })
+            ->whereDate('created_at', now())
+            ->first();
+
+
+        return view('client.landing-page.index', [
+            'lunchMate' => !empty($lunchMate) ? Shop::LUNCH_MATE : false,
+            'breakfastMate' => !empty($breakfastMate) ? Shop::BREAKFAST_MATE : false,
+            'afternoonMate' => !empty($afternoonMate) ? Shop::AFTERNOON_MATE : false,
+        ]);
+    }
+
+    public function menuByShop(Request $request, $shop)
     {
 
         // handle cancel payment
@@ -50,6 +86,9 @@ class OrderController extends Controller
 
         $menu = $this->menuRepository->query()
             ->where('status', config('constants.ACTIVE'))
+            ->whereHas('shop', function ($q) use ($shop) {
+                $q->where('slug', $shop);
+            })
             ->whereDate('created_at', now())
             ->first();
 

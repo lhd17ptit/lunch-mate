@@ -9,6 +9,9 @@
                     $names = array_column($item['items'], 'title');
                 @endphp
                 {{ implode(' + ', $names) }}
+                @if (!empty($item['note']))
+                    &nbsp;( {{ $item['note'] }})
+                @endif
             </span><br>
             <div class="order-price"> = {{ $item['total'] }},000 VND</div>
         </div>

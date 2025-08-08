@@ -87,7 +87,12 @@ class OrderExport  implements WithTitle, ShouldAutoSize, WithHeadings, FromColle
             $foodItemName = implode(' + ', array_filter($foodItemName));
         }
 
-        $foods = !empty($foodItemName) ? $foodCategoryName . ' ' . $foodItemName : $foodCategoryName;
+        $note = '';
+        if (!empty($item->note)) {
+            $note = ' (' . $item->note . ')';
+        }
+
+        $foods = !empty($foodItemName) ? $foodCategoryName . ' ' . $foodItemName . ($note) : $foodCategoryName . ($note);
 
         return [
             $item->index,

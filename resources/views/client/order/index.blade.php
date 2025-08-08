@@ -175,6 +175,11 @@
                                     @endif
                                 @endforeach
                             @endif
+                            <p class="text-center mt-5 mb-1">-----------------------------------------------</p>
+                            <div class="choose-food pt-0 pb-0 form-note">
+                                <label class="mb-2" for="note" style="font-weight: 600; font-size:18px">Ghi chú:</label>
+                                <input type="text" class="form-control" name="note" placeholder="Nhập ghi chú" class="note" id="note">
+                            </div>
                         </div>
                         <div class="mt-3 text-total-order">Số tiền cần thanh toán: <span id="total">0</span> VND</div>
 
@@ -201,6 +206,9 @@
                                             $names = array_column($item['items'], 'title');
                                         @endphp
                                         {{ implode(' + ', $names) }}
+                                        @if (!empty($item['note']))
+                                            ( {{ $item['note'] }})
+                                        @endif
                                     </span><br>
                                     <div class="order-price"> = {{ $item['total'] }},000 VND</div>
                                 </div>
@@ -395,6 +403,7 @@
                 var user_name = $('#user_name').val();
                 var floor_id = $('#floor_id').val();
                 var type_user = $('input[name="type_user"]:checked').val();
+                var note = $('input[name="note"]').val();
             
                 if (type_user == 2) {
                     if (user_name == '') {
@@ -429,7 +438,8 @@
                             type_user: type_user,
                             user_id: user_id,
                             user_name: user_name,
-                            floor_id: floor_id
+                            floor_id: floor_id,
+                            note: note
                         },
                         success: function(data) {
                             $('#order-list').html(data.data.view);
@@ -442,6 +452,7 @@
                             $('.new-user').addClass('d-none');
                             $('#user_name').val('');
                             $('#floor_id').val('');
+                            $('#note').val('');
                         },
                         error: function(error) {                            
                             toastr.error(error.responseJSON.message);
