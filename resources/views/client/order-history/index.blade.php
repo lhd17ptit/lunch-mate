@@ -72,6 +72,9 @@
                                 @else
                                     Chưa xác định
                                 @endif
+                                @if (!empty($order->note))
+                                    &nbsp;( {{ $order->note }})
+                                @endif
                             </td>
                             <td>
                                 <button class="btn btn-primary clone-serving" data-order-serving-id="{{ $order->orderServingFoodItems->pluck('food_item_id') }}">Copy</button>

@@ -19,4 +19,7 @@
     @if (!empty($foodItemName))
         {{ implode(' + ', array_filter($foodItemName)) }}
     @endif
+    @if (!empty($orderServing->note))
+        &nbsp;( {{ $orderServing->note }})
+    @endif
 </div>

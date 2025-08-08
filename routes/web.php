@@ -132,12 +132,14 @@ Route::prefix('payos')->name('payos.')->group(function () {
     Route::get('/return', [PayOsController::class, 'return'])->name('return');
 });
 
-Route::get('/', [OrderController::class, 'index'])->name('home');
+Route::get('/', [OrderController::class, 'landingPage'])->name('landingPage');
 Route::post('/get-total-order', [OrderController::class, 'getTotalOrder'])->name('get-total-order');
 Route::post('/add-to-order', [OrderController::class, 'addToOrder'])->name('add-to-order');
 Route::post('/remove-item-to-order', [OrderController::class, 'removeItemToOrder'])->name('remove-item-to-order');
 Route::post('/checkout-order', [OrderController::class, 'checkoutOrder'])->name('checkout-order');
 Route::get('/list-order', [OrderController::class, 'listOrder'])->name('list-order');
+Route::get('/{shop}', [OrderController::class, 'menuByShop'])->name('menuByShop');
+
 
 
 
