@@ -142,4 +142,29 @@ class OrderController extends Controller
             'listOrders' => $listOrders,
         ]);
     }
+
+    public function leaderboard()
+    {
+        $listUserTip = $this->orderService->leaderboard();
+
+        return view('client.leaderboard.index', [
+            'listUserTip' => $listUserTip,
+        ]);
+    }
+
+    public function getNewsTip()
+    {
+        $tipToday = $this->orderService->tipToday();
+
+        return response()->json([
+            'status' => true,
+            'message' => 'Get list tip successfully',
+            'data' => [
+                'view' => view('client.common.noti-tip', [
+                    'tipToday' => $tipToday,
+                ])->render(),
+                'tipToday' => $tipToday,
+            ],
+        ], 200);
+    }
 }

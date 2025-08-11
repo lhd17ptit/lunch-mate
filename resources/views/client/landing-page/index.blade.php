@@ -20,13 +20,14 @@
     <link rel="icon" type="image/png" href="{{ asset('admin/assets/favicon_io/favicon-32x32.png') }}" sizes="32x32">
     <link rel="canonical" href="https://lunchmate.online/">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
-    <link href="https://cdnjs.cloudflare.com/ajax/libs/toastr.js/latest/toastr.min.css" rel="stylesheet"/>
-    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
     <div class="main-container">
+        <div class="menu">
+            <a href="{{ route('list-order')}}" title="List order" target="_blank">Lịch sử đơn hàng</a>
+            <a href="{{ route('leaderboard')}}" title="Leaderboard" target="_blank">Bảng xếp hạng</a>
+        </div>
         <div class="hero">
         <h1>Ăn ngon cả ngày - Đặt nhanh vài giây</h1>
         <p>
@@ -83,5 +84,29 @@
         </div>
         </div>
     </div>
-</body>
+<div id="news_tip"></div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
+    {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> --}}
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('get-news-tip') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(data) {
+                    $('#news_tip').html(data.data.view);
+                },
+                error: function(error) {                            
+                    $('#news_tip').html('')
+                }
+            });
+           
+        });
+    </script>
 </html>
