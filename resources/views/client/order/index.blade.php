@@ -30,7 +30,7 @@
     @if (empty($menu))
         <img src="{{ asset('admin/assets/images/backgrounds/coming-soon-page.webp') }}" alt="logo" style="width: 100%; height: 100vh; object-fit: cover;">
     @else
-        <div class="row p-0 m-0">
+        <div class="row p-0 m-0 mb-5">
             <div class="col-md-6">
                 <div class="title-menu">THỰC ĐƠN HÔM NAY</div>
                 <div class="block-menu row">
@@ -260,6 +260,7 @@
             <input type="hidden" id="tip" name="tip" value="0">
 		</form>
     @endif
+    <div id="news_tip"></div>
 
 
     <!-- Modal -->
@@ -351,6 +352,20 @@
         $(document).ready(function() {
             $('#user_id').select2();
             checkTypeUser();
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('get-news-tip') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(data) {
+                    $('#news_tip').html(data.data.view);
+                },
+                error: function(error) {                            
+                    $('#news_tip').html('')
+                }
+            });
 
             $('.btn-order-now').click(function() {
                 $('.ck-food-item').prop('checked', false);

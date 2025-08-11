@@ -16,6 +16,8 @@ use Maatwebsite\Excel\Facades\Excel;
 use Yajra\DataTables\Facades\DataTables;
 use App\Http\Requests\VNP\ProcessPaymentRequest;
 use App\Http\Requests\PayOS\ProcessPaymentRequest as PayOsPaymentRequest;
+use App\Models\Order;
+use Carbon\Carbon;
 
 class OrderService
 {
@@ -354,5 +356,81 @@ class OrderService
         $items = $items->with(['orderServingFoodItems', 'orderServingFoodItems.foodItem', 'orderServingFoodItems.foodItem.foodCategory', 'user'])->orderBy('id', 'asc')->get();
 
         return $items;
+    }
+
+    public function leaderboard()
+    {
+        $users = $this->userRepository->query()->pluck('name', 'id')->toArray();
+
+        $orderHasTip = $this->orderRepository->query()->whereNotNull('tip')->where('tip', '!=', 0)->where('status', config('constants.ORDER_STATUS_SUCCESS'))->pluck('tip', 'id')->toArray();
+        $firstIds = $this->orderServingRepository->query()->selectRaw('MIN(id) as id')->whereIn('order_id', array_keys($orderHasTip))->groupBy('order_id')->pluck('id');
+        $userTip = $this->orderServingRepository->whereIn('id', $firstIds)->pluck('user_id', 'order_id')->toArray();
+
+        $tipByUser = [];
+        foreach ($userTip as $k => $value) {
+            $tip = $orderHasTip[$k] ?? 0;
+            if (!empty($tipByUser[$value])) {
+                $tipByUser[$value] += $tip;
+            } else {
+                $tipByUser[$value] = $tip;
+            }
+        }
+        
+        $result = [];
+        if (!empty($tipByUser)) {
+            arsort($tipByUser);
+
+            $rank = 0;
+            $prevValue = null;
+            $itemsBefore = 0;
+
+            foreach ($tipByUser as $id => $value) {
+                $itemsBefore++;
+                if ($value !== $prevValue) {
+                    $rank = $itemsBefore;
+                    $prevValue = $value;
+                }
+                $result[] = [
+                    'id'    => $id,
+                    'user_name' => $users[$id] ?? 'Unknown',
+                    'value' => $value,
+                    'top'   => $rank
+                ];
+            }
+        }
+
+        return $result;
+    }
+
+    public function tipToday()
+    {
+        $users = $this->userRepository->query()->pluck('name', 'id')->toArray();
+
+        $orderHasTip = $this->orderRepository->query()->whereNotNull('tip')->where('tip', '!=', 0)->where('status', config('constants.ORDER_STATUS_SUCCESS'))->whereDate('created_at', Carbon::now())->pluck('tip', 'id')->toArray();
+        $firstIds = $this->orderServingRepository->query()->selectRaw('MIN(id) as id')->whereIn('order_id', array_keys($orderHasTip))->groupBy('order_id')->pluck('id');
+        $userTip = $this->orderServingRepository->whereIn('id', $firstIds)->pluck('user_id', 'order_id')->toArray();
+
+        $tipByUser = [];
+        foreach ($userTip as $k => $value) {
+            $tip = $orderHasTip[$k] ?? 0;
+            if (!empty($tipByUser[$value])) {
+                $tipByUser[$value] += $tip;
+            } else {
+                $tipByUser[$value] = $tip;
+            }
+        }
+        
+        $result = [];
+        if (!empty($tipByUser)) {
+            foreach ($tipByUser as $id => $value) {
+                $result[] = [
+                    'id'    => $id,
+                    'user_name' => $users[$id] ?? 'Unknown',
+                    'value' => $value,
+                ];
+            }
+        }
+
+        return $result;
     }
 }

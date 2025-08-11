@@ -25,11 +25,13 @@
 </head>
 <body>
     <div class="row p-0 m-0">
-        <div class="col-1">&nbsp;</div>
-        <div class="col-10">
-            <h1 class="text-center mt-2 mb-4">Lịch sử đơn hàng</h1>
+        <div class="col-1">
+            <a class="mt-2" href="{{ route('landingPage') }}" title="Home" style="text-decoration: underline">Về trang chủ</a>
+        </div>
+        <div class="col-md-10 col-12">
+            <h1 class="text-center mt-2 mb-4" style="font-weight: bold">Lịch sử đơn hàng</h1>
 
-            <table class="table table-striped table-bordered data-table w-100" style="color:black">
+            <table class="table table-striped table-bordered data-table w-100 mt-4" style="color:black">
                 <thead>
                     <tr>
                         <th>STT</th>
@@ -86,6 +88,7 @@
         </div>
         <div class="col-1">&nbsp;</div>
     </div>
+    <div id="news_tip"></div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.1/jquery.min.js"></script>
     {{-- <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script> --}}
@@ -111,6 +114,20 @@
                 scrollTop: $target.offset().top - ($(window).height() / 2) + ($target.outerHeight() / 2)
                 }, 1000); // 1000ms
             }
+
+            $.ajax({
+                type: 'GET',
+                url: '{{ route('get-news-tip') }}',
+                data: {
+                    "_token": "{{ csrf_token() }}",
+                },
+                success: function(data) {
+                    $('#news_tip').html(data.data.view);
+                },
+                error: function(error) {                            
+                    $('#news_tip').html('')
+                }
+            });
         })
     </script>
 
