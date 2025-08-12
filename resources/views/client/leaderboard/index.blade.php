@@ -12,7 +12,7 @@
 
     <meta property="og:title" content="Người ủng hộ hào phóng | LunchMate">
     <meta property="og:description" content="Khám phá top khách hàng tip nhiều nhất, cạnh tranh vị trí tipper hào phóng và nhận phần thưởng hấp dẫn.">
-    <meta property="og:image" content="{{ asset('admin/assets/images/logos/leaderboard-tip-banner.png') }}">
+    <meta property="og:image" content="{{ asset('admin/assets/images/logos/new-banner.png') }}">
     <meta property="og:url" content="https://lunchmate.online/leaderboard-tip">
     <meta property="og:type" content="website">
 
@@ -33,7 +33,8 @@
                     <div class="ribbon"></div>
                     <table>
                         @foreach($listUserTip as $k => $item)
-                            @if ($item['top'] <= 5)
+                        {{-- show top 20 donators --}}
+                            @if ($item['top'] <= 20) 
                                 <tr>
                                     <td class="number">
                                         @if ($item['top'] == 1)
