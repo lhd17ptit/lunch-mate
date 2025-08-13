@@ -26,4 +26,15 @@ class OrderServing extends Model
     {
         return $this->hasMany(OrderServingFoodItem::class, 'order_serving_id');
     }
+
+    public function getTip(){
+
+        $isFirst = ! static::where('order_id', $this->order_id)
+                    ->where('id', '<', $this->id)
+                    ->exists();
+        if($isFirst){
+            return $this->order->tip ?? 0;
+        }
+        return 0; // not first serving of order - tip = 0
+    }
 }
