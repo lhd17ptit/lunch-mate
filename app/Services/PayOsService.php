@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Http\Requests\PayOS\ProcessPaymentRequest;
+use App\Models\Donation;
 use App\Models\Order;
 use App\Models\PayOsWebhookPayload;
 use App\Models\Shop;
@@ -120,6 +121,10 @@ class PayOsService
 
             // TODO update order/transaction
             $order = Order::where('order_code', $orderCode)->first();
+			// donation case
+			if(empty($order)){
+				$order = Donation::where('order_code', $orderCode)->first();
+			}
 
             if(!empty($order)){
                 $code = data_get($data, 'data.code');

@@ -27,6 +27,7 @@
         <div class="menu">
             <a href="{{ route('list-order')}}" title="List order" target="_blank">Lịch sử đơn hàng</a>
             <a href="{{ route('leaderboard')}}" title="Leaderboard" target="_blank">Bảng xếp hạng</a>
+            <a href="{{ route('donate-page')}}" title="Donate" target="_blank">Donate</a>
         </div>
         <div class="hero">
         <h1>Ăn ngon cả ngày - Đặt nhanh vài giây</h1>

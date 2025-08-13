@@ -140,6 +140,8 @@ Route::post('/checkout-order', [OrderController::class, 'checkoutOrder'])->name(
 Route::get('/list-order', [OrderController::class, 'listOrder'])->name('list-order');
 Route::get('/leaderboard', [OrderController::class, 'leaderboard'])->name('leaderboard');
 Route::get('/get-news-tip', [OrderController::class, 'getNewsTip'])->name('get-news-tip');
+Route::get('/donate', [OrderController::class, 'donatePage'])->name('donate-page');
+Route::post('/donate', [OrderController::class, 'generateDonationOrder'])->name('donate');
 Route::get('/{shop}', [OrderController::class, 'menuByShop'])->name('menuByShop');
 
 
