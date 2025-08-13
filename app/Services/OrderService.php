@@ -355,6 +355,11 @@ class OrderService
     
         $items = $items->with(['orderServingFoodItems', 'orderServingFoodItems.foodItem', 'orderServingFoodItems.foodItem.foodCategory', 'user'])->orderBy('id', 'asc')->get();
 
+        $items->transform(function ($item) {
+            $item->tip = $item->getTip();
+            return $item;
+        });
+
         return $items;
     }
 

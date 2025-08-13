@@ -38,6 +38,7 @@
                         <th>Tên khách hàng</th>
                         <th>Ngày đặt</th>
                         <th>Tổng tiền</th>
+                        <th>Tip</th>
                         <th>Chi tiết</th>
                         <th>Hành động</th>
                     </tr>
@@ -68,6 +69,7 @@
                             <td>{{ $order->user->name ?? 'Chưa xác định' }}</td>
                             <td>{{ $order->created_at->timezone('Asia/Ho_Chi_Minh')->format('d/m/Y H:i') }}</td>
                             <td>{{ $order->amount.',000' }}</td>
+                            <td>{{ number_format($order->tip * 1000) }}</td>
                             <td>
                                 @if (!empty($foodItemName))
                                     {{ (!empty($foodCategoryName) ? $foodCategoryName . ' ' : '') . implode(' + ', array_filter($foodItemName)) }}
