@@ -39,6 +39,12 @@
 
             <input type="radio" class="btn-check select-tip" name="tip" id="tip-2000" autocomplete="off" value="2">
             <label class="btn btn-outline-success" for="tip-2000">2000đ</label>
+
+			<!-- Separate custom input -->
+			<div class="input-group input-group-sm" style="width: 150px;">
+				<input type="radio" class="btn-check select-tip" name="tip" id="tip-custom" autocomplete="off" value="">
+				<input type="number" class="form-control btn btn-outline-success" placeholder="Custom" id="custom-tip-input">
+			</div>
         </div>
         <div class="total-order-text mt-3 fs-5"><b>Tổng tiền: <span class="total-order-amount" data-total="{{$total}}">{{ number_format($total * 1000, 0, ',') }}</span> VND</b></div>
     </div> 
