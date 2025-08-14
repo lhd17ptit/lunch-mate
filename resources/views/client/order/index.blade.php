@@ -380,9 +380,9 @@
                 $('#exampleModalCenter').modal('show');
             });
 
-            function updateServingTotal(){
+            function updateServingTotal(e){
                 var items = [];
-                const checkbox = this;
+                const checkbox = e;
 
                 $('.ck-food-item').each(function() {
                     if ($(this).prop('checked')) {
@@ -413,10 +413,10 @@
             }
 
             $(document).on('change', '.ck-food-item', function() {
-                updateServingTotal()
+                updateServingTotal(this)
             });
 
-            updateServingTotal();
+            updateServingTotal(null);
 
             $(document).on('click', '#save_order', function() {
                 var items = [];
