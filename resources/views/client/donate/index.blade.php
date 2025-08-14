@@ -37,7 +37,8 @@
 
 				<div class="mt-3">
 					<label for="amount" class="form-label">Số tiền</label>
-					<input type="number" class="form-control" name="amount" id="amount" placeholder="Enter a number" min="2000">
+					<input type="text" class="form-control" name="amount_display" id="amount_display" placeholder="Enter a number">
+                    <input type="hidden" name="amount" id="amount">
 				</div>
 
 				<!-- Message Input -->
@@ -67,6 +68,24 @@
 		$(document).ready(function() {
             $('#user_id').select2();
 		});
+
+        $('#amount_display').on('input', function() {
+            let raw = $(this).val().replace(/[^\d]/g, '');
+    
+            // Add thousand separators for display
+            let formatted = raw.replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+            $(this).val(formatted);
+            
+            // Update hidden input with numeric value
+            $('#amount').val(raw);
+        });
+
+        $('#donate-form').on('submit', function(e){
+            if(parseInt($('#amount').val(), 10) < 2000){
+                e.preventDefault();
+                alert('Donate amount must be at least 2,000');
+            }
+        });
 	</script>
 </body>
 </html>
