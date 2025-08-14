@@ -167,4 +167,23 @@ class OrderController extends Controller
             ],
         ], 200);
     }
+
+	public function donatePage()
+    {
+        $users = $this->userRepository
+						->query()
+						->where('status', config('constants.ACTIVE'))
+						->where('is_from_client', false)
+						->whereNotNull('name')
+						->orderBy('name', 'asc')
+						->get();
+
+        return view('client.donate.index', [
+            'users' => $users,
+        ]);
+    }
+
+	public function generateDonationOrder(Request $request){
+		return $this->orderService->generateDonationOrder($request->all());
+	}
 }

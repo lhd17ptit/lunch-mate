@@ -3,6 +3,7 @@
 namespace App\Services;
 
 use App\Exports\OrderExport;
+use App\Repositories\DonationRepository;
 use App\Repositories\FoodCategoryRepository;
 use App\Repositories\FoodItemRepository;
 use App\Repositories\OrderRepository;
@@ -30,6 +31,7 @@ class OrderService
     protected $orderServingFoodItemRepository;
     protected $vnpayService;
     protected $payOsService;
+    protected $donationRepo;
     
     public function __construct(
         FoodItemRepository $foodItemRepository,
@@ -40,6 +42,7 @@ class OrderService
         OrderServingFoodItemRepository $orderServingFoodItemRepository,
         VnpayService $vnpayService,
         PayOsService $payOsService,
+        DonationRepository $donationRepo,
     )
     {
         $this->foodItemRepository = $foodItemRepository;
@@ -50,6 +53,7 @@ class OrderService
         $this->orderServingFoodItemRepository = $orderServingFoodItemRepository;
         $this->vnpayService = $vnpayService;
         $this->payOsService = $payOsService;
+        $this->donationRepo = $donationRepo;
     }
 
     public function getTotalOrder($items)
@@ -365,13 +369,21 @@ class OrderService
 
     public function leaderboard()
     {
+		$tipByUser = [];
         $users = $this->userRepository->query()->pluck('name', 'id')->toArray();
 
         $orderHasTip = $this->orderRepository->query()->whereNotNull('tip')->where('tip', '!=', 0)->where('status', config('constants.ORDER_STATUS_SUCCESS'))->pluck('tip', 'id')->toArray();
         $firstIds = $this->orderServingRepository->query()->selectRaw('MIN(id) as id')->whereIn('order_id', array_keys($orderHasTip))->groupBy('order_id')->pluck('id');
         $userTip = $this->orderServingRepository->whereIn('id', $firstIds)->pluck('user_id', 'order_id')->toArray();
 
-        $tipByUser = [];
+		$donations = $this->donationRepo->query()->where('status', config('constants.ORDER_STATUS_SUCCESS'))->get();
+		
+		foreach($donations as $donation){
+			if(!empty($donation->user_id)){
+				$tipByUser[$donation->user_id] = ($tipByUser[$donation->user_id] ?? 0) + (float)($donation->amount / 1000);
+			}
+		}
+
         foreach ($userTip as $k => $value) {
             $tip = $orderHasTip[$k] ?? 0;
             if (!empty($tipByUser[$value])) {
@@ -438,4 +450,30 @@ class OrderService
 
         return $result;
     }
+
+	public function generateDonationOrder($data){
+
+		$amount = $data['amount'] ?? 0;
+		if($amount < 2000){ // min 2k
+			return response()->json(['message' => 'Invalid amount'], 400);
+		}
+		$orderCode = now()->timestamp;
+
+		// create donation record
+		$this->donationRepo->create([
+			'user_id' => $data['user_id'] ?? null,
+			'amount' => $amount,
+			'message' => $data['message'] ?? null,
+			'order_code' => $orderCode,
+			'status' => config('constants.ORDER_STATUS_PENDING'),
+		]);
+
+		// request payment
+		$request = new PayOsPaymentRequest([
+			'amount' => $amount,
+			'description' => $orderCode,
+			'code' => $orderCode,
+		]);
+		return redirect()->away($this->payOsService->processPayment($request));
+	}
 }
