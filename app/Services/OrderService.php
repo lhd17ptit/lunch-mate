@@ -422,12 +422,21 @@ class OrderService
     public function tipToday()
     {
         $users = $this->userRepository->query()->pluck('name', 'id')->toArray();
+        $tipByUser = [];
 
         $orderHasTip = $this->orderRepository->query()->whereNotNull('tip')->where('tip', '!=', 0)->where('status', config('constants.ORDER_STATUS_SUCCESS'))->whereDate('created_at', Carbon::now())->pluck('tip', 'id')->toArray();
         $firstIds = $this->orderServingRepository->query()->selectRaw('MIN(id) as id')->whereIn('order_id', array_keys($orderHasTip))->groupBy('order_id')->pluck('id');
         $userTip = $this->orderServingRepository->whereIn('id', $firstIds)->pluck('user_id', 'order_id')->toArray();
 
-        $tipByUser = [];
+
+        $donations = $this->donationRepo->query()->where('status', config('constants.ORDER_STATUS_SUCCESS'))->whereDate('updated_at', Carbon::now())->get();
+		
+		foreach($donations as $donation){
+			if(!empty($donation->user_id)){
+				$tipByUser[$donation->user_id] = ($tipByUser[$donation->user_id] ?? 0) + (float)($donation->amount / 1000);
+			}
+		}
+
         foreach ($userTip as $k => $value) {
             $tip = $orderHasTip[$k] ?? 0;
             if (!empty($tipByUser[$value])) {
