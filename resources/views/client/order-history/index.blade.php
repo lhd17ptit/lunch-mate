@@ -24,7 +24,9 @@
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
-    <div class="row p-0 m-0">
+    @include('client.common.noti-memory')
+
+    <div class="row p-0 m-0 mt-5">
         <div class="col-1">
             <a class="mt-2" href="{{ route('landingPage') }}" title="Home" style="text-decoration: underline">Về trang chủ</a>
         </div>

@@ -144,15 +144,16 @@ td {
 .ribbon {
     width: 42rem;
     height: 5.5rem;
-    top: -0.5rem;
-    background: linear-gradient( 90deg, #ffd700, #ff9900, #ff5e00, #ff0099, #9900ff, #00ccff, #00ff99, #ffd700);
-    background-size: 800% 800%;
+    top: -0.1rem;
+    background-image: url('./images/bg-vn.png');
+    /* background: linear-gradient( 90deg, #ffd700, #ff9900, #ff5e00, #ff0099, #9900ff, #00ccff, #00ff99, #ffd700); */
+    /* background-size: 800% 800%; */
+    background-size: 100% 100%;
     position: absolute;
     left: -1rem;
-    -webkit-box-shadow: 0px 15px 11px -6px #7a7a7d;
-    box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-    background-size: 800% 800%;
-    animation: shimmer 6s linear infinite;
+    /* -webkit-box-shadow: 0px 15px 11px -6px #7a7a7d; */
+    /* box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); */
+    /* animation: shimmer 6s linear infinite; */
     border-radius: 10px;
 }
 
@@ -283,4 +284,11 @@ td {
         margin-left: -10px;
         margin-top: -10px;
     }
+}
+
+.top-donate {
+    background-image: url('./images/bg-vn.png');
+    background-size: 100% 100%;
+    color: #ffffff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
 }

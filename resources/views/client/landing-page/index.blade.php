@@ -23,6 +23,7 @@
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
+    @include('client.common.noti-memory')
     <div class="main-container">
         <div class="menu">
             <a href="{{ route('list-order')}}" title="List order" target="_blank">Lịch sử đơn hàng</a>
