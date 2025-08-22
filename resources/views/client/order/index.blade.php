@@ -26,11 +26,13 @@
     <link rel="stylesheet" href="{{ asset('client/assets/custom.css') }}">
 </head>
 <body>
+    @include('client.common.noti-memory')
+
     <h1 class="visually-hidden">LunchMate - Đặt Cơm Văn Phòng Tòa Nhà Sông Đà</h1>
     @if (empty($menu))
         <img src="{{ asset('admin/assets/images/backgrounds/coming-soon-page.webp') }}" alt="logo" style="width: 100%; height: 100vh; object-fit: cover;">
     @else
-        <div class="row p-0 m-0 mb-5">
+        <div class="row p-0 m-0 mb-5 mt-5">
             <div class="col-md-6">
                 <div class="title-menu">THỰC ĐƠN HÔM NAY</div>
                 <div class="block-menu row">

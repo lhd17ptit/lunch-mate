@@ -25,7 +25,9 @@
     <link rel="stylesheet" href="{{ asset('client/assets/leaderboard.css') }}">
 </head>
 <body>
-    <div class="row p-0 m-0">
+    @include('client.common.noti-memory')
+
+    <div class="row p-0 m-0 mt-5">
         <div class="col-md-10 col-12 w-100">
             <h1 class="text-center mt-4 mb-4" style="font-weight:600">Danh sách người ủng hộ</h1>
             <main class="mt-5">
@@ -35,7 +37,7 @@
                         @foreach($listUserTip as $k => $item)
                         {{-- show top 20 donators --}}
                             @if ($item['top'] <= 20) 
-                                <tr>
+                                <tr class="{{ $item['top'] <= 3 ? 'top-donate' : '' }}">
                                     <td class="number">
                                         @if ($item['top'] == 1)
                                             <img class="icon-top-1" src="{{ asset('client/assets/images/dragon-white.png')}}" alt="dragon"/>
