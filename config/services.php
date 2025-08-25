@@ -29,5 +29,11 @@ return [
         'secret' => env('AWS_SECRET_ACCESS_KEY'),
         'region' => env('AWS_DEFAULT_REGION', 'us-east-1'),
     ],
+	
+	'microsoft' => [
+		'client_id' => env('AZURE_CLIENT_ID'),
+		'redirect' => env('AZURE_REDIRECT_URL'),
+		'tenant_id' => env('AZURE_TENANT_ID'),
+	]
 
 ];

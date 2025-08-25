@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\PayOsController;
+use App\Http\Controllers\Admin\MicrosoftAuthController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -21,4 +22,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 
 Route::prefix('payos')->name('payos.')->group(function () {
     Route::post('/webhook', [PayOsController::class, 'handleWebhook'])->name('handle-webhook');
+});
+
+Route::prefix('microsoft')->name('microsoft.')->group(function () {
+    Route::get('/callback', [MicrosoftAuthController::class, 'callback'])->name('microsoft-callback');
 });

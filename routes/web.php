@@ -10,6 +10,7 @@ use App\Http\Controllers\Admin\MenuController;
 use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ShopController;
 use App\Http\Controllers\Admin\UserController;
+use App\Http\Controllers\Admin\MicrosoftAuthController;
 use App\Http\Controllers\Client\OrderController;
 use App\Http\Controllers\Client\ProductController as ClientProductController;
 use App\Http\Controllers\PayOsController;
@@ -142,8 +143,8 @@ Route::get('/leaderboard', [OrderController::class, 'leaderboard'])->name('leade
 Route::get('/get-news-tip', [OrderController::class, 'getNewsTip'])->name('get-news-tip');
 Route::get('/donate', [OrderController::class, 'donatePage'])->name('donate-page');
 Route::post('/donate', [OrderController::class, 'generateDonationOrder'])->name('donate');
+Route::get('/test-msg', [MicrosoftAuthController::class, 'redirect']);
 Route::get('/{shop}', [OrderController::class, 'menuByShop'])->name('menuByShop');
-
 
 
 
